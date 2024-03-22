@@ -28,6 +28,10 @@ const User = sequelize.define('users', {
         type: Sequelize.BOOLEAN,
 
     },
+    isloggedIn: {
+        type: Sequelize.BOOLEAN,
+
+    },
   
 
 

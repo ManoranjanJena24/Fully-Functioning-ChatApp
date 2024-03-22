@@ -3,7 +3,7 @@ let url = "http://localhost:3000"
 let token;
 function logout() {
     localStorage.clear()
-    window.location.href='login.html'
+    window.location.href = 'login.html'
 
 }
 
@@ -34,9 +34,31 @@ function logout() {
 //     }
 // }
 
+function logout() {
+    console.log(token)
+    axios.get(`${url}/user/logout`, { headers: { "Authorization": token } }).then((res) => {
+        console.log(res)
+        localStorage.clear()
+        alert(res.data)
+        window.location.href = 'login.html'
+    }).catch(err => console.log(err))
+
+
+}
+
+function getLoggedInUsers() {
+
+    axios.get(`${url}/user/online`).then((res) => {
+        console.log(res.data.users)
+    })
+}
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
     token = localStorage.getItem('token')
-    checkPremium(localStorage.getItem('isPremium') === 'true')
-   
+    // checkPremium(localStorage.getItem('isPremium') === 'true')
+    getLoggedInUsers();
+
+
 });

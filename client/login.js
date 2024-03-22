@@ -74,7 +74,7 @@ function userLogin(data) {
     console.log(url)
     axios.post(`${url}/user/login`, data).then((res) => {
         alert("User Loggedin succesfully")
-        localStorage.setItem("user", data.name)
+        localStorage.setItem("user", res.data.name)
         console.log(res.data.token)
         console.log(res)
         localStorage.setItem('token', res.data.token)
