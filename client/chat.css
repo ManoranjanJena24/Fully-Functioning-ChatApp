@@ -10,7 +10,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -47,7 +47,8 @@ body {
 }
 
 .chat-container {
-    height: 300px;
+    background-color: #85cda8;
+    height: 420px;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
@@ -78,3 +79,63 @@ body {
 .send-btn:hover {
     background-color: #1a1a2e;
 }
+
+.user-message {
+    text-align: right;
+}
+
+.other-message {
+    text-align: left;
+}
+
+.message-content {
+    display: inline-block;
+    max-width: 70%;
+    word-wrap: break-word;
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.user-message-content {
+    display: inline-block;
+    max-width: 70%;
+    word-wrap: break-word;
+    background-color: #DCF8C6;
+    padding: 8px;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+
+
+.name {
+    /* font-weight: bold; */
+    margin-right: 5px;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+
+/* #chat-container {
+    height: 400px;
+    overflow-y: scroll;
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  .message {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .message.user-message {
+    justify-content: flex-end;
+  }
+  .message .name {
+    font-weight: bold;
+    margin-right: 5px;
+  } */

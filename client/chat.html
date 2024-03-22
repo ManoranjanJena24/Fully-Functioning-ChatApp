@@ -14,12 +14,13 @@
     <nav class="navbar">
         <div class="container">
             <h1 class="logo">Chat App</h1>
+            <h2 id="welcome"></h2>
             <button id="logoutBtn" class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </nav>
-    
+
     <div class="container">
-        <div class="chat-container">
+        <div class="chat-container" id="chat-container">
             <!-- Chat messages will be displayed here -->
         </div>
         <form id="messageForm" class="message-form">
@@ -27,7 +28,7 @@
             <button type="submit" class="send-btn">Send</button>
         </form>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="chat.js"></script>
 </body>
