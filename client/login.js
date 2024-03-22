@@ -74,13 +74,13 @@ function userLogin(data) {
     console.log(url)
     axios.post(`${url}/user/login`, data).then((res) => {
         alert("User Loggedin succesfully")
-        localStorage.setItem("user", data.username)
+        localStorage.setItem("user", data.name)
         console.log(res.data.token)
         console.log(res)
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('isPremium', res.data.isPremium)
         // window.location.href = '/client/expense.html'; 
-        window.location.href = 'expense.html';
+        window.location.href = 'chat.html';
 
     }).catch((error) => {
         console.log(error.response.data.message)
