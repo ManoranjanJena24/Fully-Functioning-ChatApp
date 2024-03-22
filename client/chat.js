@@ -45,28 +45,33 @@ function getMessages() {
     })
 }
 
+
+
 function renderMessages(data) {
     console.log(data)
+
+    const chatContainer = document.getElementById('chat-container');
+    chatContainer.innerHTML = ''
+
+
     data.forEach(message => {
-        displayMessage(message.message, message.name, message.name === username)
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+
+        if (message.name === username) {
+            messageElement.classList.add('user-message');
+            messageElement.innerHTML = `<span class="username">${message.name}</span><div class="user-message-content">${message.message}</div>`;
+        } else {
+            messageElement.classList.add('other-message');
+            messageElement.innerHTML = `<span class="name">${message.name}</span><div class="message-content">${message.message}</div>`;
+        }
+        chatContainer.appendChild(messageElement);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
     });
 }
 
-function displayMessage(message, name, isUserMessage) {
-    const chatContainer = document.getElementById('chat-container');
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-
-    if (isUserMessage) {
-        messageElement.classList.add('user-message');
-        messageElement.innerHTML = `<span class="username">${name}</span><div class="user-message-content">${message}</div>`;
-    } else {
-        messageElement.classList.add('other-message');
-        messageElement.innerHTML = `<span class="name">${name}</span><div class="message-content">${message}</div>`;
-    }
-    chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
+setInterval(getMessages, 5000);
 window.addEventListener('DOMContentLoaded', () => {
     token = localStorage.getItem('token')
     username = localStorage.getItem('user')
