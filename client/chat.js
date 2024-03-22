@@ -1,10 +1,29 @@
 let url = "http://localhost:3000"
 
 let token;
-function logout() {
-    localStorage.clear()
-    window.location.href = 'login.html'
 
+document.getElementById('messageForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+   
+
+    const messageData = {
+        message: document.getElementById('messageInput').value,
+        
+    };
+
+    this.reset();
+    sendMessage(messageData);
+});
+
+function sendMessage(data) {
+    axios.post(`${url}/message/add-message`,data, { headers: { "Authorization": token } }).then((res) => {
+        console.log(res)
+        getMessages()
+    })
+}
+
+function getMessages() {
+    //TODO
 }
 
 

@@ -11,6 +11,9 @@ const path = require('path');
 
 
 const User = require('./models/user')
+
+const Message = require('./models/message')
+
 // const Expense = require('./models/expense')
 // const Order = require('./models/order')
 // const ForgotPassword = require('./models/forgotPassword')
@@ -25,7 +28,7 @@ const cors = require('cors')
 app.use(morgan('combined', { stream: accessLogStream }))
 
 const userRoutes = require('./routes/user')
-// const expenseRoutes = require('./routes/expense')
+const messageRoutes = require('./routes/message')
 // const purchaseRoutes = require('./routes/purchase')
 // const passwordRoutes = require('./routes/password')
 // const salaryRoutes = require('./routes/salary')
@@ -39,7 +42,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 
 app.use('/user', userRoutes);
-// app.use('/expense', expenseRoutes)
+app.use('/message', messageRoutes)
 // app.use('/purchase', purchaseRoutes)
 // app.use('/password', passwordRoutes)
 // app.use('/salary', salaryRoutes)
@@ -53,8 +56,8 @@ app.use((req, res, next) => {
 
 
 
-// Expense.belongsTo(User)
-// User.hasMany(Expense)
+Message.belongsTo(User)
+User.hasMany(Message)
 // Order.belongsTo(User)
 // User.hasMany(Order)
 // ForgotPassword.belongsTo(User)
