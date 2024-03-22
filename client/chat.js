@@ -19,11 +19,23 @@ function sendMessage(data) {
     axios.post(`${url}/message/add-message`,data, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
         getMessages()
+    }).catch((err) => {
+        console.log(err)
     })
 }
 
 function getMessages() {
-    //TODO
+    axios.get(`${url}/message/get-messages`).then((res) => {
+        console.log(res.data)
+        renderMessages(res.data)
+    }).catch((err) => {
+        console.log(err)
+    })
+}
+
+function renderMessages(data) {
+    // TODO
+    
 }
 
 

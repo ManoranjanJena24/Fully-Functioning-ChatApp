@@ -12,7 +12,7 @@ const userAuthentication = require('../middlewares/auth')
 
 router.post('/add-message', userAuthentication.authenticate, messageController.postAddMessage);
 
-// router.get('/logout', userAuthentication.authenticate, userController.getLogoutUser);
+router.get('/get-messages',  messageController.getMessages);
 
 
 module.exports = router;
