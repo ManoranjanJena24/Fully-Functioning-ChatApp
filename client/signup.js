@@ -84,7 +84,7 @@ function postSignUpData(data) {
     }).catch((err) => {
         console.log(err)
         const errormsg = document.getElementById('errormsg')
-        errormsg.innerHTML = err.message
+        errormsg.innerHTML = err.response.data
 
     })
 }

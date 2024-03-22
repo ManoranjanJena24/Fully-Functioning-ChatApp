@@ -86,6 +86,6 @@ function userLogin(data) {
         console.log(error.response.data.message)
         const errormsg = document.getElementById('errormsg')
         errormsg.innerHTML = error.response.data.message
-        alert(error)
+        alert(error.response.data.message)
     })
 }

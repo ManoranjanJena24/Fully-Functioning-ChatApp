@@ -186,6 +186,13 @@ h1 {
     width: 40px !important;
 }
 
+#errormsg {
+    color: red;
+    /* align-items: center; */
+    text-align: center;
+
+}
+
 @keyframes wobble {
     0% {
         transform: scale(1.025);

@@ -8,6 +8,7 @@
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
@@ -185,6 +186,12 @@ h1 {
 
 .theme-btn:hover {
     width: 40px !important;
+}
+#errormsg {
+    color: red;
+    /* align-items: center; */
+    text-align: center;
+
 }
 
 @keyframes wobble {
