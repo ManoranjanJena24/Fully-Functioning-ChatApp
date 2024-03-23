@@ -38,14 +38,6 @@ function sendMessage(data) {
     })
 }
 
-// function getMessages() {
-//     axios.get(`${url}/message/get-messages`).then((res) => {
-//         // console.log(res.data)
-//         renderMessages(res.data)
-//     }).catch((err) => {
-//         console.log(err)
-//     })
-// }
 
 let lastMessageId = localStorage.getItem('lastMessageId') || -1;
 const MAX_MESSAGES = 1000;
@@ -98,6 +90,66 @@ function renderMessages(data) {
     });
 }
 
+
+// chat.js
+
+function toggleCreateGroupForm() {
+    const createGroupFormContainer = document.getElementById('createGroupFormContainer');
+    createGroupFormContainer.classList.toggle('hidden');
+}
+
+document.getElementById('createGroupForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const groupName = document.getElementById('groupNameInput').value;
+    createGroup(groupName);
+});
+
+function createGroup(groupName) {
+    axios.post(`${url}/group/create`, { groupName }, { headers: { "Authorization": token } })
+        .then((res) => {
+            console.log(res.data);
+            // Refresh group list
+            getGroups();
+            // Hide the form
+            toggleCreateGroupForm();
+            // Clear input field
+            document.getElementById('groupNameInput').value = '';
+        })
+        .catch((err) => console.error(err));
+}
+
+function getGroups() {
+    axios.get(`${url}/group/get-groups`, { headers: { "Authorization": token } })
+        .then((res) => {
+            const groups = res.data;
+            renderGroups(groups);
+        })
+        .catch((err) => console.error(err));
+}
+
+function renderGroups(groups) {
+    const groupList = document.getElementById('group-list');
+    groupList.innerHTML = '';
+
+    groups.forEach(group => {
+        const groupItem = document.createElement('div');
+        groupItem.classList.add('group-item');
+        groupItem.textContent = group.groupName;
+        groupItem.addEventListener('click', () => joinGroup(group.id));
+        groupList.appendChild(groupItem);
+    });
+}
+// todo
+// function joinGroup(groupId) {
+//     axios.post(`${url}/group/join/${groupId}`, {}, { headers: { "Authorization": token } })
+//         .then((res) => {
+//             console.log(res.data);
+//             // Handle success, if needed
+//         })
+//         .catch((err) => console.error(err));
+// }
+
+
 setInterval(getMessages, 5000);
 window.addEventListener('DOMContentLoaded', () => {
     token = localStorage.getItem('token')
@@ -107,4 +159,5 @@ window.addEventListener('DOMContentLoaded', () => {
     // checkPremium(localStorage.getItem('isPremium') === 'true')
     getLoggedInUsers()
     getMessages()
+    getGroups();
 });

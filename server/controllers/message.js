@@ -20,29 +20,6 @@ exports.postAddMessage = (req, res, next) => {
 
 
 
-// exports.getMessages = async (req, res, next) => {
-//     try {
-//         const messages = await Message.findAll({
-//             attributes: [
-//                 'id',
-//                 'message',
-//                 [sequelize.col('user.name'), 'name'], // Include user.name as 'name'
-//             ],
-//             include: [{
-//                 model: User,
-//                 attributes: [], // No need to specify attributes for User model
-//             }],
-//         });
-//             console.log(messages,"messssssaagesss")
-//         res.json(messages);
-//     } catch (error) {
-//         console.error('Error fetching messages:', error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// };
-
-
-
 exports.getMessages = async (req, res, next) => {
     try {
         const lastMessageId = req.query.lastmsgId || -1;

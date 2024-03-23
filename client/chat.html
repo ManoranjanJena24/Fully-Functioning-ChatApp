@@ -16,10 +16,22 @@
             <h1 class="logo">Chat App</h1>
             <h2 id="welcome"></h2>
             <button id="logoutBtn" class="logout-btn" onclick="logout()">Logout</button>
+            <button id="createGroupBtn" class="create-group-btn" onclick="toggleCreateGroupForm()">Create Group</button>
         </div>
     </nav>
 
+    <div id="createGroupFormContainer" class="create-group-form-container hidden">
+        <form id="createGroupForm" class="create-group-form">
+            <input type="text" id="groupNameInput" class="group-name-input" placeholder="Enter group name" required>
+            <button type="submit" class="create-group-submit-btn">Create</button>
+        </form>
+    </div>
+
     <div class="container">
+        <div class="sidebar">
+            <h3>Groups</h3>
+            <div id="group-list"></div>
+        </div>
         <div class="chat-container" id="chat-container">
             <!-- Chat messages will be displayed here -->
         </div>

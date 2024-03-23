@@ -14,7 +14,7 @@ const User = require('./models/user')
 
 const Message = require('./models/message')
 
-// const Expense = require('./models/expense')
+const Group = require('./models/group')
 // const Order = require('./models/order')
 // const ForgotPassword = require('./models/forgotPassword')
 // const Salary = require('./models/salary')
@@ -29,7 +29,7 @@ app.use(morgan('combined', { stream: accessLogStream }))
 
 const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message')
-// const purchaseRoutes = require('./routes/purchase')
+const groupRoutes = require('./routes/group')
 // const passwordRoutes = require('./routes/password')
 // const salaryRoutes = require('./routes/salary')
 
@@ -43,7 +43,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use('/user', userRoutes);
 app.use('/message', messageRoutes)
-// app.use('/purchase', purchaseRoutes)
+app.use('/group', groupRoutes)
 // app.use('/password', passwordRoutes)
 // app.use('/salary', salaryRoutes)
 
@@ -58,8 +58,9 @@ app.use((req, res, next) => {
 
 Message.belongsTo(User)
 User.hasMany(Message)
-// Order.belongsTo(User)
-// User.hasMany(Order)
+Group.belongsToMany(User, { through: 'GroupUser' });
+User.belongsToMany(Group, { through: 'GroupUser' });
+
 // ForgotPassword.belongsTo(User)
 // User.hasMany(ForgotPassword)
 // Salary.belongsTo(User)

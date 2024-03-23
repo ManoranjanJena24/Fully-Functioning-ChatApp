@@ -139,3 +139,35 @@ body {
     font-weight: bold;
     margin-right: 5px;
   } */
+
+
+  /* chat.css */
+  .hidden {
+      display: none;
+  }
+
+  .create-group-form-container {
+      margin-top: 20px;
+  }
+
+  .create-group-form {
+      display: flex;
+      align-items: center;
+  }
+
+  .group-name-input {
+      flex: 1;
+      margin-right: 10px;
+  }
+
+  .create-group-submit-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+  }
+
+  .create-group-submit-btn:hover {
+      background-color: #0056b3;
+  }
