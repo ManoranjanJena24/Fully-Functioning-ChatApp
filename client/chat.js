@@ -38,15 +38,40 @@ function sendMessage(data) {
     })
 }
 
-function getMessages() {
-    axios.get(`${url}/message/get-messages`).then((res) => {
-        // console.log(res.data)
-        renderMessages(res.data)
-    }).catch((err) => {
-        console.log(err)
-    })
-}
+// function getMessages() {
+//     axios.get(`${url}/message/get-messages`).then((res) => {
+//         // console.log(res.data)
+//         renderMessages(res.data)
+//     }).catch((err) => {
+//         console.log(err)
+//     })
+// }
 
+let lastMessageId = localStorage.getItem('lastMessageId') || -1;
+const MAX_MESSAGES = 1000;
+
+function getMessages() {
+    axios.get(`${url}/message/get-messages?lastmsgId=${lastMessageId}`).then((res) => {
+        const messages = res.data;
+        if (messages.length > 0) {
+
+            lastMessageId = messages[messages.length - 1].id;
+
+            localStorage.setItem('lastMessageId', lastMessageId);
+
+            let storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+            if (storedMessages.length > 1000) {
+                storedMessages.splice(0, storedMessages.length - MAX_MESSAGES)
+            }
+            localStorage.setItem('messages', JSON.stringify([...storedMessages, ...messages]));
+
+            // Render messages
+            renderMessages(JSON.parse(localStorage.getItem('messages')));
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
 
 
 function renderMessages(data) {
