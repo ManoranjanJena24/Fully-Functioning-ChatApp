@@ -79,8 +79,8 @@ function userLogin(data) {
         console.log(res)
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('isPremium', res.data.isPremium)
-        // window.location.href = '/client/expense.html'; 
-        window.location.href = 'chat.html';
+        // window.location.href = 'chat.html';
+        window.location.href = 'latestchat.html';
 
     }).catch((error) => {
         console.log(error.response.data.message)

@@ -139,6 +139,7 @@ function renderGroups(groups) {
         groupList.appendChild(groupItem);
     });
 }
+// we have to do this for the mall
 // todo
 // function joinGroup(groupId) {
 //     axios.post(`${url}/group/join/${groupId}`, {}, { headers: { "Authorization": token } })
