@@ -18,6 +18,8 @@ let url = "http://localhost:3000"
 let username
 let groupId
 let groupName
+let admin
+let createdAt
 
 let token;
 function logout() {
@@ -85,37 +87,122 @@ function getMessages() {
 }
 
 
+// function renderMessages(data) {
+
+
+//     // const chatContainer = document.getElementById('chat-container');
+//     // chatContainer.innerHTML = ''
+//     const chatArea = document.getElementById('chat-area-main')
+//     chatArea.innerHTML=''
+//     let initial = ''
+//     let lastChatMsg = null;
+
+
+//     data.forEach(message => {
+//         // console.log(message.groupId,"gorup id")
+//         if (message.groupId === groupId) {
+//             const chatUser = document.createElement('div')
+//             const chatContext = document.createElement('div')
+//             const chatText = document.createElement('div')
+
+//             if (message.name !== initial) {
+//                 console.log(message)
+
+
+//                 if (message.name === username) { //todo:user is the one who sent email
+//                     chatUser.className = 'chat-msg owner'
+//                 }
+//                 else {
+//                     chatUser.className = 'chat-msg'
+//                 }
+
+
+//                 chatContext.className = 'chat-msg-content'
+
+
+//                 chatText.className = 'chat-msg-text'
+//                 console.log(message.message)
+//                 chatText.innerHTML = message.message
+
+//                 chatContext.appendChild(chatText)
+//                 chatUser.appendChild(chatContext)
+//                 chatArea.appendChild(chatUser)
+
+//                 lastChatMsg = chatContext;
+//             }
+//             else{
+
+//                 chatText.className = 'chat-msg-text'
+//                 console.log(message.message)
+//                 chatText.innerHTML = message.message
+//                 lastChatMsg.appendChild(chatText);
+
+//             }
+//             initial=message.name
+//         }
+//     });
+// }
+
+
+// chat.js
 function renderMessages(data) {
+    const chatArea = document.getElementById('chat-area-main');
+    chatArea.innerHTML = ''; // Clear previous messages
+    let initial = '';
+    let lastChatMsg = null;
+    let lastUserChatDiv = null; // Track the last chat user div
 
-
-    // const chatContainer = document.getElementById('chat-container');
-    // chatContainer.innerHTML = ''
-
-
-    data.forEach(message => {
-        // console.log(message.groupId,"gorup id")
+    data.forEach((message, index) => {
         if (message.groupId === groupId) {
-            console.log(message)
-            //     const messageElement = document.createElement('div');
-            // messageElement.classList.add('message');
+            const chatUser = document.createElement('div');
+            const chatContext = document.createElement('div');
+            const chatText = document.createElement('div');
 
-            // if (message.name === username) {
-            //     messageElement.classList.add('user-message');
-            //     messageElement.innerHTML = `<span class="username">${message.name}</span><div class="user-message-content">${message.message}</div>`;
-            // } else {
-            //     messageElement.classList.add('other-message');
-            //     messageElement.innerHTML = `<span class="name">${message.name}</span><div class="message-content">${message.message}</div>`;
-            // }
-            // chatContainer.appendChild(messageElement);
-            // chatContainer.scrollTop = chatContainer.scrollHeight;
+            if (message.name !== initial) {
+                if (message.name === username) {
+                    chatUser.className = 'chat-msg owner';
+                } else {
+                    chatUser.className = 'chat-msg';
+                }
+
+                chatContext.className = 'chat-msg-content';
+                chatText.className = 'chat-msg-text';
+                chatText.innerHTML = message.message;
+
+                chatContext.appendChild(chatText);
+                chatUser.appendChild(chatContext);
+                chatArea.appendChild(chatUser);
+
+                lastChatMsg = chatContext; // Set the last chat context for the user
+                lastUserChatDiv = chatUser; // Set the last chat user div
+            } else {
+                const newChatText = document.createElement('div');
+                newChatText.className = 'chat-msg-text';
+                newChatText.innerHTML = message.message;
+                lastChatMsg.appendChild(newChatText);
+            }
+
+            // If the current message is the last message or the next message belongs to a different user
+            if (index === data.length - 1 || data[index + 1].name !== message.name) {
+                // Append a new div to chatUser
+                const newChatDiv = document.createElement('div');
+                newChatDiv.className = 'chat-msg-profile';
+                // Adjust class name as needed
+                const lastUserName = document.createElement('div')
+                lastUserName.className = 'chat-msg-date'
+                console.log(message.name)
+                lastUserName.innerHTML = message.name
+
+                newChatDiv.appendChild(lastUserName)
+                lastUserChatDiv.appendChild(newChatDiv);
+            }
+
+            initial = message.name; // Update the initial name for comparison
         }
-
-
     });
 }
 
 
-// chat.js
 
 function toggleCreateGroupForm() {
     const createGroupFormContainer = document.getElementById('createGroupFormContainer');
@@ -168,40 +255,8 @@ function getGroups() {
         .catch((err) => console.error(err));
 }
 
-// function renderGroups(groups) {
-//     console.log(groups)
-//     const groupArea=document.getElementById('groupArea')
-//     groups.forEach((group)=>{
-//         const groupDiv=document.createElement('div')
-//         groupDiv.className='msg' //todo-className=msg active if that particular group is selected
-//         const msgDiv=document.createElement('div')
-//         msgDiv.className='msg-detail'
-//         const username=document.createElement('div')
-//         username.className='msg-username'
-//         username.innerHTML=group.groupName
-
-//         const contentDiv=document.createElement('div')
-//         contentDiv.className='msg-content'
-
-//         const lastMsg=document.createElement('span')
-//         lastMsg.className='msg-message'
-//         lastMsg.innerHTML='This is the last message' //todo
-
-//         const lastMsgDate=document.createElement('span')
-//         lastMsgDate.className='msg-date'
-//         lastMsgDate.innerHTML='20m' //todo
-
-//         contentDiv.appendChild(lastMsg)
-//         contentDiv.appendChild(lastMsgDate)
-//         msgDiv.appendChild(username)
-//         msgDiv.appendChild(contentDiv)
-//         groupDiv.appendChild(msgDiv)
-//         groupArea.appendChild(groupDiv)
-//     })
-
-// }
-
 function renderGroups(groups) {
+
     console.log(groups)
     const groupArea = document.getElementById('groupArea');
     groupArea.innerHTML = ''
@@ -212,10 +267,24 @@ function renderGroups(groups) {
 
             groupId = group.id
             groupName = group.groupName
+            admin = group.userName[0]
+            createdAt = (group.createdAt)
+
+
+            const date = new Date(createdAt);
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = date.toLocaleDateString('en-US', options);
+            console.log(formattedDate)
+
+
             document.getElementById('currentGroupNameId').innerHTML = groupName
             document.getElementById('currentGroupName').innerHTML = groupName
+            document.getElementById('admin').innerHTML = `Created by ${admin}, ${formattedDate}`
             console.log('group selected id', groupId)
             console.log('groupName', groupName)
+            console.log('amdin', admin)
+
 
             const allGroups = document.querySelectorAll('.msg.active');
             allGroups.forEach((g) => g.className = 'msg');

@@ -44,9 +44,9 @@
 
     <div class="wrapper">
 
-      <div class="conversation-area" >
+      <div class="conversation-area">
         <div id="groupArea">
-        <!-- <div class="msg active">
+          <!-- <div class="msg active">
           <div class="msg-profile group">
             <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
               stroke-linejoin="round" class="css-i6dzq1">
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div> -->
-      </div>
+        </div>
         <button class="add" id="createGroupForm"></button>
       </div>
 
@@ -99,7 +99,8 @@
             <span>+4</span>
           </div>
         </div>
-        <div class="chat-area-main">
+        <div id="chat-area-main" class="chat-area-main">
+
           <div class="chat-msg">
             <div class="chat-msg-profile">
               <img class="chat-msg-img"
@@ -116,6 +117,7 @@
                 lectus quam id leo.</div>
             </div>
           </div>
+
           <div class="chat-msg owner">
             <div class="chat-msg-profile">
               <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png"
@@ -127,6 +129,7 @@
               <div class="chat-msg-text">Cras mollis nec arcu malesuada tincidunt.</div>
             </div>
           </div>
+
           <div class="chat-msg">
             <div class="chat-msg-profile">
               <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%282%29.png"
@@ -139,27 +142,35 @@
               <div class="chat-msg-text">Ut faucibus pulvinar elementum integer enim neque volutpat.</div>
             </div>
           </div>
-          <div class="chat-msg owner">
-            <div class="chat-msg-profile">
+
+          <div id="chat-msg owner" class="chat-msg owner">
+
+            <!-- <div class="chat-msg-profile">
               <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png"
                 alt="" />
               <div class="chat-msg-date">Message seen 2.50pm</div>
-            </div>
-            <div class="chat-msg-content">
-              <div class="chat-msg-text">posuere eget augue sodales, aliquet posuere eros.</div>
+            </div> -->
+
+            <div id="chat-msg-content" class="chat-msg-content">
+              <div id="chat-msg-text" class="chat-msg-text">posuere eget augue sodales, aliquet posuere eros.</div>
               <div class="chat-msg-text">Cras mollis nec arcu malesuada tincidunt.</div>
             </div>
+
           </div>
+
           <div class="chat-msg">
+
             <div class="chat-msg-profile">
               <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%2812%29.png"
                 alt="" />
               <div class="chat-msg-date">Message seen 3.16pm</div>
             </div>
+
             <div class="chat-msg-content">
               <div class="chat-msg-text">Egestas tellus rutrum tellus pellentesque</div>
             </div>
           </div>
+
           <div class="chat-msg">
             <div class="chat-msg-profile">
               <img class="chat-msg-img"
@@ -172,16 +183,20 @@
               </div>
             </div>
           </div>
+
           <div class="chat-msg owner">
+
             <div class="chat-msg-profile">
               <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png"
                 alt="" />
               <div class="chat-msg-date">Message seen 2.50pm</div>
             </div>
+
             <div class="chat-msg-content">
               <div class="chat-msg-text">Tincidunt arcu non sodales😂</div>
             </div>
           </div>
+
           <div class="chat-msg">
             <div class="chat-msg-profile">
               <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%282%29.png"
@@ -193,6 +208,7 @@
               </div>
             </div>
           </div>
+
         </div>
         <div class="chat-area-footer">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -253,7 +269,7 @@
             </svg>
           </div>
           <div class="detail-title" id="currentGroupNameId"></div>
-          <div class="detail-subtitle">Created by Aysenur, 1 May 2020</div>
+          <div id="admin" class="detail-subtitle">Created by Aysenur, 1 May 2020</div>
           <div class="detail-buttons">
             <button class="detail-button">
               <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="currentColor"
