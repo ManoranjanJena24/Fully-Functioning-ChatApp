@@ -60,6 +60,8 @@ Message.belongsTo(User)
 User.hasMany(Message)
 Group.belongsToMany(User, { through: 'GroupUser' });
 User.belongsToMany(Group, { through: 'GroupUser' });
+Message.belongsTo(Group)
+Group.hasMany(Message)
 
 // ForgotPassword.belongsTo(User)
 // User.hasMany(ForgotPassword)

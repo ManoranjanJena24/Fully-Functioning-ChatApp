@@ -3,12 +3,29 @@ const sequelize = require('../utils/database')
 const Message = require('../models/message')
 const { Op } = require('sequelize');
 
+// exports.postAddMessage = (req, res, next) => {
+//     const userId = req.user.id
+//     const message = req.body.message
+//     Message.create({
+//         message: message,
+//         userId: userId
+//     }).then(() => {
+//         res.send("Message sent succesfully")
+
+//     }).catch((err) => {
+//         res.send(err)
+//     })
+
+// };
+
 exports.postAddMessage = (req, res, next) => {
+    const groupId = req.query.groupId
     const userId = req.user.id
     const message = req.body.message
     Message.create({
         message: message,
-        userId: userId
+        userId: userId,
+        groupId: groupId
     }).then(() => {
         res.send("Message sent succesfully")
 
@@ -17,8 +34,6 @@ exports.postAddMessage = (req, res, next) => {
     })
 
 };
-
-
 
 exports.getMessages = async (req, res, next) => {
     try {
@@ -30,6 +45,8 @@ exports.getMessages = async (req, res, next) => {
             attributes: [
                 'id',
                 'message',
+                'groupId',
+                'createdAt',
                 [sequelize.col('user.name'), 'name'], // Include user.name as 'name'
             ],
             include: [{
