@@ -238,7 +238,8 @@ exports.getOnlineUsers = (req, res, next) => {
     User.findAll({
         where: {
             isloggedIn: true
-        }
+        },
+        attributes:['id','name']
     }).then((users) => {
         res.json({ users: users })
     }).catch(err => res.send(err))
