@@ -87,64 +87,6 @@ function getMessages() {
 }
 
 
-// function renderMessages(data) {
-
-
-//     // const chatContainer = document.getElementById('chat-container');
-//     // chatContainer.innerHTML = ''
-//     const chatArea = document.getElementById('chat-area-main')
-//     chatArea.innerHTML=''
-//     let initial = ''
-//     let lastChatMsg = null;
-
-
-//     data.forEach(message => {
-//         // console.log(message.groupId,"gorup id")
-//         if (message.groupId === groupId) {
-//             const chatUser = document.createElement('div')
-//             const chatContext = document.createElement('div')
-//             const chatText = document.createElement('div')
-
-//             if (message.name !== initial) {
-//                 console.log(message)
-
-
-//                 if (message.name === username) { //todo:user is the one who sent email
-//                     chatUser.className = 'chat-msg owner'
-//                 }
-//                 else {
-//                     chatUser.className = 'chat-msg'
-//                 }
-
-
-//                 chatContext.className = 'chat-msg-content'
-
-
-//                 chatText.className = 'chat-msg-text'
-//                 console.log(message.message)
-//                 chatText.innerHTML = message.message
-
-//                 chatContext.appendChild(chatText)
-//                 chatUser.appendChild(chatContext)
-//                 chatArea.appendChild(chatUser)
-
-//                 lastChatMsg = chatContext;
-//             }
-//             else{
-
-//                 chatText.className = 'chat-msg-text'
-//                 console.log(message.message)
-//                 chatText.innerHTML = message.message
-//                 lastChatMsg.appendChild(chatText);
-
-//             }
-//             initial=message.name
-//         }
-//     });
-// }
-
-
-// chat.js
 function renderMessages(data) {
     const chatArea = document.getElementById('chat-area-main');
     chatArea.innerHTML = ''; // Clear previous messages
@@ -267,8 +209,9 @@ function renderGroups(groups) {
 
             groupId = group.id
             groupName = group.groupName
-            admin = group.userName[0]
+            admin = group.adminName
             createdAt = (group.createdAt)
+
             if (admin === username) {
                 console.log('This user is admin')
                 document.getElementById('add-participants-btn').disabled = false
@@ -277,7 +220,6 @@ function renderGroups(groups) {
                 console.log('This user is not  admin')
                 document.getElementById('add-participants-btn').disabled = true
             }
-
 
             const date = new Date(createdAt);
 
@@ -305,9 +247,9 @@ function renderGroups(groups) {
 
         const msgDiv = document.createElement('div');
         msgDiv.className = 'msg-detail';
-        const usernameDiv = document.createElement('div');
-        usernameDiv.className = 'msg-username';
-        usernameDiv.innerHTML = group.groupName;
+        const usernamediv = document.createElement('div');
+        usernamediv.className = 'msg-username';
+        usernamediv.innerHTML = group.groupName;
 
         const contentDiv = document.createElement('div');
         contentDiv.className = 'msg-content';
@@ -322,7 +264,7 @@ function renderGroups(groups) {
 
         contentDiv.appendChild(lastMsg);
         contentDiv.appendChild(lastMsgDate);
-        msgDiv.appendChild(usernameDiv);
+        msgDiv.appendChild(usernamediv);
         msgDiv.appendChild(contentDiv);
         groupDiv.appendChild(msgDiv);
         groupArea.appendChild(groupDiv);
@@ -330,21 +272,17 @@ function renderGroups(groups) {
 
 }
 
-// function addParticipants() {
-//     console.log(groupId, 'this is the selected groupid')
-//     console.log('Add participants')
-//     document.getElementById('searchUser').style.display = 'block';
-
-//     document.getElementById('searchUser').addEventListener('input', async (event) => {
-//         const searchValue = event.target.value.trim();
-//         console.log(searchValue)
-//     })
-// }
-
 function addParticipants() {
     console.log(groupId, 'this is the selected groupid')
     console.log('Add participants')
     document.getElementById('searchUser').style.display = 'block';
+    document.getElementById('colour-change').style.display = 'none';
+    document.getElementById('all-photos').style.display = 'none';
+
+    // const usersArr=[]
+    const displayUsersDiv = document.getElementById('display-users')
+    displayUsersDiv.innerHTML = ''
+    document.getElementById('done').style.display = 'block';
 
     document.getElementById('searchUser').addEventListener('input', async (event) => {
         const searchValue = event.target.value.trim();
@@ -354,9 +292,20 @@ function addParticipants() {
                 params: { searchQuery: searchValue }
             });
 
+
             const users = response.data;
             // Handle the response and display matching users
             console.log(users);
+            const userDiv = document.createElement('div')
+            userDiv.innerHTML = `
+            <span >${users.name}</span>
+            <button class="add-button" onclick="addUserToGroup(${users.id})">Add</button>
+            `;
+
+            displayUsersDiv.appendChild(userDiv)
+            document.getElementById('searchUser').innerHTML = ''
+
+
             // document.getElementById('searchUser').style.display = 'none';
             // Do something with the matching users
         } catch (error) {
@@ -366,7 +315,33 @@ function addParticipants() {
     })
 }
 
+async function addUserToGroup(userId) {
+    console.log(userId, 'user id')
+    console.log(groupId, 'gorup id')
+    try {
+        const response = await axios.post(`${url}/group/addUser`, {
+            groupId: groupId,
+            userId: userId
+        });
 
+        // Handle the response (e.g., display a success message)
+        console.log(response.data);
+    }
+    catch (error) {
+        console.error('Error adding user to group:', error);
+        // Handle error
+    }
+
+}
+function AddUsers() {
+    document.getElementById('searchUser').style.display = 'none';
+    document.getElementById('done').style.display = 'none';
+    document.getElementById('colour-change').style.display = 'block';
+    document.getElementById('all-photos').style.display = 'block';
+    document.getElementById('display-users').style.display = 'none';
+
+
+}
 
 
 setInterval(getMessages, 5000);
@@ -383,5 +358,5 @@ window.addEventListener('DOMContentLoaded', () => {
     getMessages()
     getGroups();
     document.getElementById('searchUser').style.display = 'none';
-
+    document.getElementById('done').style.display = 'none';
 });

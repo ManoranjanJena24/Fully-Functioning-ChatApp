@@ -17,36 +17,47 @@ exports.createGroup = async (req, res, next) => {
     }
 };
 
-// exports.getGroups = async (req, res, next) => {
-//     const userId = req.user.id;
 
+
+// exports.getGroups = async (req, res, next) => {
 //     try {
-//         const user = await User.findByPk(userId, {
-//             include: [{
-//                 model: Group,
-//                 attributes: ['id', 'groupName']
-//             }]
+//         // Retrieve all groups
+//         const groups = await Group.findAll({
+//             attributes: ['id', 'groupName', 'createdAt','adminId'],
+//             include: {
+//                 model: User,
+//                 attributes: ['name'],
+//                 as: 'users'
+//             }
 //         });
 
-//         if (!user) {
-//             return res.status(404).json({ error: 'User not found' });
+//         // If there are no groups found
+//         if (!groups || groups.length === 0) {
+//             return res.status(404).json({ error: 'No groups found' });
 //         }
 
-//         const groups = user.groups;
-//         console.log(user.groups,"groupppppppps")
-//         res.json(groups);
+//         // Map the retrieved groups to the desired format
+//         const formattedGroups = groups.map(group => ({
+//             id: group.id,
+//             groupName: group.groupName,
+//             adminId: group.adminId,
+//             userName: group.users.map(user => user.name),
+//             createdAt: group.createdAt
+//         }));
+
+//         // Send the formatted groups in the response
+//         res.json(formattedGroups);
 //     } catch (error) {
 //         console.error('Error fetching groups:', error);
 //         res.status(500).json({ error: 'Internal Server Error' });
 //     }
 // };
 
-
 exports.getGroups = async (req, res, next) => {
     try {
         // Retrieve all groups
         const groups = await Group.findAll({
-            attributes: ['id', 'groupName', 'createdAt'],
+            attributes: ['id', 'groupName', 'createdAt', 'adminId'],
             include: {
                 model: User,
                 attributes: ['name'],
@@ -63,8 +74,22 @@ exports.getGroups = async (req, res, next) => {
         const formattedGroups = groups.map(group => ({
             id: group.id,
             groupName: group.groupName,
+            adminId: group.adminId,
             userName: group.users.map(user => user.name),
             createdAt: group.createdAt
+        }));
+
+        // Fetch admin names for all groups concurrently
+        await Promise.all(formattedGroups.map(async (group) => {
+            console.log('Admin ID:', group.adminId);
+            try {
+                const admin = await User.findByPk(group.adminId, { attributes: ['name'] });
+                console.log('Admin:', admin ? admin.name : 'Unknown');
+                group.adminName = admin ? admin.name : 'Unknown';
+            } catch (error) {
+                console.error('Error fetching admin:', error);
+                group.adminName = 'Unknown';
+            }
         }));
 
         // Send the formatted groups in the response
