@@ -1,5 +1,7 @@
 const Group = require('../models/group');
 const User = require('../models/user');
+const sequelize = require('../utils/database')
+const { Op } = require('sequelize');
 
 exports.createGroup = async (req, res, next) => {
     const { groupName } = req.body;
@@ -86,6 +88,36 @@ exports.joinGroup = async (req, res, next) => {
         res.status(200).json({ message: 'Joined group successfully' });
     } catch (error) {
         console.error('Error joining group:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+exports.postAddUserToGroup = async (req, res, next) => {
+    const { groupId, userId } = req.body;
+
+    try {
+        // Check if the user is already a member of the group
+        const existingMembership = await sequelize.models.GroupUser.findOne({
+            where: {
+                groupId: groupId,
+                userId: userId
+            }
+        });
+
+        if (existingMembership) {
+            return res.status(400).json({ error: 'User is already a member of the group' });
+        }
+
+        // Add the user to the group
+        await sequelize.models.GroupUser.create({
+            groupId: groupId,
+            userId: userId
+        });
+
+        res.status(200).json({ message: 'User added to group successfully' });
+    } catch (error) {
+        console.error('Error adding user to group:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };

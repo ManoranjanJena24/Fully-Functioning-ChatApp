@@ -266,7 +266,7 @@ exports.getFindUsers = async (req, res, next) => {
         const searchQuery = req.query.searchQuery;
 
         // Find users where either email or phone matches the searchQuery
-        const users = await User.findAll({
+        const users = await User.findOne({
             where: {
                 [Op.or]: [
                     { email: searchQuery },
