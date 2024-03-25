@@ -330,6 +330,17 @@ function renderGroups(groups) {
 
 }
 
+// function addParticipants() {
+//     console.log(groupId, 'this is the selected groupid')
+//     console.log('Add participants')
+//     document.getElementById('searchUser').style.display = 'block';
+
+//     document.getElementById('searchUser').addEventListener('input', async (event) => {
+//         const searchValue = event.target.value.trim();
+//         console.log(searchValue)
+//     })
+// }
+
 function addParticipants() {
     console.log(groupId, 'this is the selected groupid')
     console.log('Add participants')
@@ -338,8 +349,24 @@ function addParticipants() {
     document.getElementById('searchUser').addEventListener('input', async (event) => {
         const searchValue = event.target.value.trim();
         console.log(searchValue)
+        try {
+            const response = await axios.get(`${url}/user/findUser`, {
+                params: { searchQuery: searchValue }
+            });
+
+            const users = response.data;
+            // Handle the response and display matching users
+            console.log(users);
+            // document.getElementById('searchUser').style.display = 'none';
+            // Do something with the matching users
+        } catch (error) {
+            console.error('User does not exist:', error);
+            // Handle error
+        }
     })
 }
+
+
 
 
 setInterval(getMessages, 5000);

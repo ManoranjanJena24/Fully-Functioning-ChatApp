@@ -259,3 +259,29 @@ exports.getLogoutUser = (req, res, next) => {
         res.send(err)
     })
 }
+
+
+exports.getFindUsers = async (req, res, next) => {
+    try {
+        const searchQuery = req.query.searchQuery;
+
+        // Find users where either email or phone matches the searchQuery
+        const users = await User.findAll({
+            where: {
+                [Op.or]: [
+                    { email: searchQuery },
+                    { phone: searchQuery }
+                ]
+            },
+            attributes: [
+                'id',
+                'name'
+            ]
+        });
+
+        res.json(users);
+    } catch (error) {
+        console.error('Error finding users:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

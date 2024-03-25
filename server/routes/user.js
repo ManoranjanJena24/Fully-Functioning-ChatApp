@@ -19,6 +19,7 @@ router.post('/login', userController.postLoginUser)
 
 router.get('/online', userController.getOnlineUsers);
 router.get('/logout', userAuthentication.authenticate, userController.getLogoutUser);
+router.get('/findUser', userController.getFindUsers);
 
 
 module.exports = router;
