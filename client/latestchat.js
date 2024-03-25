@@ -330,6 +330,17 @@ function renderGroups(groups) {
 
 }
 
+function addParticipants() {
+    console.log(groupId, 'this is the selected groupid')
+    console.log('Add participants')
+    document.getElementById('searchUser').style.display = 'block';
+
+    document.getElementById('searchUser').addEventListener('input', async (event) => {
+        const searchValue = event.target.value.trim();
+        console.log(searchValue)
+    })
+}
+
 
 setInterval(getMessages, 5000);
 window.addEventListener('DOMContentLoaded', () => {
@@ -344,4 +355,6 @@ window.addEventListener('DOMContentLoaded', () => {
     getLoggedInUsers()
     getMessages()
     getGroups();
+    document.getElementById('searchUser').style.display = 'none';
+
 });
