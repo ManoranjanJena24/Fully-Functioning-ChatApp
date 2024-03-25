@@ -269,6 +269,14 @@ function renderGroups(groups) {
             groupName = group.groupName
             admin = group.userName[0]
             createdAt = (group.createdAt)
+            if (admin === username) {
+                console.log('This user is admin')
+                document.getElementById('add-participants-btn').disabled = false
+            }
+            else {
+                console.log('This user is not  admin')
+                document.getElementById('add-participants-btn').disabled = true
+            }
 
 
             const date = new Date(createdAt);
@@ -297,9 +305,9 @@ function renderGroups(groups) {
 
         const msgDiv = document.createElement('div');
         msgDiv.className = 'msg-detail';
-        const username = document.createElement('div');
-        username.className = 'msg-username';
-        username.innerHTML = group.groupName;
+        const usernameDiv = document.createElement('div');
+        usernameDiv.className = 'msg-username';
+        usernameDiv.innerHTML = group.groupName;
 
         const contentDiv = document.createElement('div');
         contentDiv.className = 'msg-content';
@@ -314,7 +322,7 @@ function renderGroups(groups) {
 
         contentDiv.appendChild(lastMsg);
         contentDiv.appendChild(lastMsgDate);
-        msgDiv.appendChild(username);
+        msgDiv.appendChild(usernameDiv);
         msgDiv.appendChild(contentDiv);
         groupDiv.appendChild(msgDiv);
         groupArea.appendChild(groupDiv);

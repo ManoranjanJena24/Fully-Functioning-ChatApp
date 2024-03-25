@@ -146,6 +146,9 @@ html {
   align-items: center;
   padding: 0 20px;
 }
+button[disabled] {
+  pointer-events: none;
+}
 
 .wrapper {
   width: 100%;
