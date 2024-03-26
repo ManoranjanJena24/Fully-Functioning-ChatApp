@@ -206,7 +206,21 @@ function renderGroups(groups) {
         const groupDiv = document.createElement('div');
         groupDiv.className = 'msg';
         groupDiv.addEventListener('click', () => {
+            const allMembers = document.getElementById('detail-all-members')
+            allMembers.innerHTML = ''
 
+            // const participants_grid=document.createElement('div')
+            // participants_grid.className='detail-photo-grid'
+
+            allUsers = group.userName
+            allUsers.forEach((user) => {
+
+                const currentUser = document.createElement('div')
+                currentUser.innerHTML = user
+                currentUser.className = 'participant';
+                allMembers.appendChild(currentUser)
+                // participants_grid.appendChild(currentUser)
+            })
             groupId = group.id
             groupName = group.groupName
             admin = group.adminName
@@ -277,7 +291,7 @@ function addParticipants() {
     console.log('Add participants')
     document.getElementById('searchUser').style.display = 'block';
     document.getElementById('colour-change').style.display = 'none';
-    document.getElementById('all-photos').style.display = 'none';
+    document.getElementById('all-members').style.display = 'none';
 
     // const usersArr=[]
     const displayUsersDiv = document.getElementById('display-users')
@@ -297,13 +311,14 @@ function addParticipants() {
             // Handle the response and display matching users
             console.log(users);
             const userDiv = document.createElement('div')
+            userDiv.id=users.id
             userDiv.innerHTML = `
             <span >${users.name}</span>
             <button class="add-button" onclick="addUserToGroup(${users.id})">Add</button>
             `;
 
             displayUsersDiv.appendChild(userDiv)
-            document.getElementById('searchUser').innerHTML = ''
+            document.getElementById('searchUser').value = ''
 
 
             // document.getElementById('searchUser').style.display = 'none';
@@ -318,6 +333,7 @@ function addParticipants() {
 async function addUserToGroup(userId) {
     console.log(userId, 'user id')
     console.log(groupId, 'gorup id')
+    
     try {
         const response = await axios.post(`${url}/group/addUser`, {
             groupId: groupId,
@@ -326,10 +342,13 @@ async function addUserToGroup(userId) {
 
         // Handle the response (e.g., display a success message)
         console.log(response.data);
+        const userDiv = document.getElementById(userId)
+        userDiv.parentNode.removeChild(userDiv);
     }
     catch (error) {
-        console.error('Error adding user to group:', error);
+        console.error('Error adding user to group:', error.response.data.error);
         // Handle error
+        
     }
 
 }
@@ -337,8 +356,9 @@ function AddUsers() {
     document.getElementById('searchUser').style.display = 'none';
     document.getElementById('done').style.display = 'none';
     document.getElementById('colour-change').style.display = 'block';
-    document.getElementById('all-photos').style.display = 'block';
+    document.getElementById('all-members').style.display = 'block';
     document.getElementById('display-users').style.display = 'none';
+    getGroups();
 
 
 }
