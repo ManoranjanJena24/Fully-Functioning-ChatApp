@@ -692,6 +692,9 @@ button[disabled] {
   /* Rounded corners */
   cursor: pointer;
   /* Cursor on hover */
+  margin-right: 10px;
+  width: 500px;
+
 
 }
 
@@ -831,7 +834,22 @@ button[disabled] {
   font-weight: 500;
 }
 
+.user-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Align items vertically in the center */
+}
+
+.remove {
+  max-width: 80px;
+  margin-left: 10px;
+  cursor: pointer;
+  /* Adjust as needed */
+}
+
 .errorMsg {
+
   color: red;
 }
 

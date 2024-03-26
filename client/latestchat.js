@@ -214,12 +214,32 @@ function renderGroups(groups) {
 
             allUsers = group.userName
             allUsers.forEach((user) => {
+                console.log(user.id)
+                const thisUserDiv = document.createElement('div')
+                thisUserDiv.className = 'user-container';
 
                 const currentUser = document.createElement('div')
-                currentUser.innerHTML = user
+                const removeUser = document.createElement('buttton')
+                if (group.adminName === username) {
+
+                    removeUser.className = 'detail-button remove'
+                    removeUser.textContent = 'Remove'
+                    removeUser.addEventListener('click', () => {
+                        // Handle remove user functionality
+                        removeUserFromGroup(user.id); // Pass the user ID
+                    });
+
+                }
+
+
+                currentUser.innerHTML = user.name
                 currentUser.className = 'participant';
-                allMembers.appendChild(currentUser)
-                // participants_grid.appendChild(currentUser)
+
+                thisUserDiv.appendChild(currentUser)
+                if (group.adminName === username)
+                    thisUserDiv.appendChild(removeUser)
+
+                allMembers.appendChild(thisUserDiv)
             })
             groupId = group.id
             groupName = group.groupName
@@ -366,6 +386,10 @@ function AddUsers() {
     getGroups();
 
 
+}
+
+function removeUserFromGroup(id) {
+    console.log('user id to be removed ', id)
 }
 
 

@@ -129,10 +129,10 @@ async function getUserNamesByGroupId(groupId) {
         }
 
         // Use the association to fetch all users in the group
-        const users = await group.getUsers({ attributes: ['name'] });
+        const users = await group.getUsers({ attributes: ['name','id'] });
 
         // Extract user names from the result
-        return users.map(user => user.name);
+        return users.map(user => ({ id: user.id, name: user.name })); 
     } catch (error) {
         console.error('Error fetching user names:', error);
         return []; // Return an empty array in case of error
