@@ -1,4 +1,5 @@
-let url = "http://localhost:3000"
+// let url = "http://localhost:3000"
+let url = "http://54.242.179.63:3000"
 let username
 
 let token;

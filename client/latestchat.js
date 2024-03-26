@@ -14,7 +14,8 @@ toggleButton.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
 });
 
-let url = "http://localhost:3000"
+// let url = "http://localhost:3000"
+let url = "http://54.242.179.63:3000"
 let username
 let groupId
 let groupName
