@@ -831,6 +831,26 @@ button[disabled] {
   font-weight: 500;
 }
 
+.errorMsg {
+  color: red;
+}
+
+.shake {
+  animation: shakeAnimation 0.2s infinite alternate;
+  /* Adjust the animation duration as needed */
+}
+
+@keyframes shakeAnimation {
+  from {
+    transform: translateX(-1px);
+  }
+
+  to {
+    transform: translateX(1px);
+    /* Adjust the amount of shake as needed */
+  }
+}
+
 @media (max-width: 1120px) {
   .detail-area {
     display: none;

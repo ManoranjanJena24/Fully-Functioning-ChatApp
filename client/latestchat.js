@@ -348,7 +348,12 @@ async function addUserToGroup(userId) {
     catch (error) {
         console.error('Error adding user to group:', error.response.data.error);
         // Handle error
-        
+        const userDiv = document.getElementById(userId)
+        userDiv.className = 'errorMsg shake'
+        userDiv.innerHTML = error.response.data.error;
+        setTimeout(() => {
+            userDiv.parentNode.removeChild(userDiv) // Clear the inner HTML
+        }, 2000);
     }
 
 }
