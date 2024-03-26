@@ -209,14 +209,17 @@ function renderGroups(groups) {
             const allMembers = document.getElementById('detail-all-members')
             allMembers.innerHTML = ''
 
-            // const participants_grid=document.createElement('div')
-            // participants_grid.className='detail-photo-grid'
-
             allUsers = group.userName
+            groupId = group.id
+            groupName = group.groupName
+            admin = group.adminName
+            createdAt = (group.createdAt)
+
             allUsers.forEach((user) => {
                 console.log(user.id)
                 const thisUserDiv = document.createElement('div')
                 thisUserDiv.className = 'user-container';
+                thisUserDiv.id=user.id
 
                 const currentUser = document.createElement('div')
                 const removeUser = document.createElement('buttton')
@@ -241,10 +244,7 @@ function renderGroups(groups) {
 
                 allMembers.appendChild(thisUserDiv)
             })
-            groupId = group.id
-            groupName = group.groupName
-            admin = group.adminName
-            createdAt = (group.createdAt)
+            
 
             if (admin === username) {
                 console.log('This user is admin')
@@ -388,8 +388,24 @@ function AddUsers() {
 
 }
 
-function removeUserFromGroup(id) {
-    console.log('user id to be removed ', id)
+async function removeUserFromGroup(id) {
+
+    try {
+        // Send a DELETE request to your backend API endpoint
+        const response = await axios.delete(`${url}/group/removeUser`, {
+            data: { groupId, id }, // Pass the group ID and user ID in the request body
+            headers: { "Authorization": token } // Add authorization headers if required
+        });
+
+
+        document.getElementById(id).remove()
+        // Handle the response
+        console.log(response.data); // Log success message or handle as needed
+
+    } catch (error) {
+        console.error('Error removing user from group:', error);
+        // Handle error
+    }
 }
 
 

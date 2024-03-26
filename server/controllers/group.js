@@ -139,6 +139,28 @@ async function getUserNamesByGroupId(groupId) {
     }
 }
 
+exports.removeUserFromGroup = async (req, res) => {
+    // const { groupId, userId } = req.body;
+    const groupId = req.body.groupId // Assuming you're passing groupId and userId in the request body
+    const userId = req.body.id // Assuming you're passing groupId and userId in the request body
+
+    try {
+        // Find the group
+        const group = await Group.findByPk(groupId);
+        if (!group) {
+            return res.status(404).json({ error: 'Group not found' });
+        }
+
+        // Remove the user from the group using the association method
+        await group.removeUser(userId);
+
+        // Success message
+        return res.status(200).json({ message: `User with ID ${userId} removed from group with ID ${groupId}` });
+    } catch (error) {
+        console.error('Error removing user from group:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 // Helper function to fetch admin name (optional)
 async function getAdminName(adminId) {
