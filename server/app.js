@@ -49,7 +49,7 @@ app.use('/group', groupRoutes)
 
 app.use((req, res, next) => {
     console.log('url>>>>>>>', req.url)
-    res.sendFile(path.join(__dirname, `public/${req.url}`))
+    res.sendFile(path.join(__dirname, `client/${req.url}`))
 
 })
 
