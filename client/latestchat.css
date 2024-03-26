@@ -570,7 +570,7 @@ button[disabled] {
   background-color: var(--button-color);
   padding: 10px 14px;
   border-radius: 5px;
-  color: white;
+  color: black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -696,6 +696,9 @@ button[disabled] {
   width: 500px;
 
 
+}
+.admin {
+  border: 1px solid var(--theme-color);
 }
 
 

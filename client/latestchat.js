@@ -223,7 +223,7 @@ function renderGroups(groups) {
 
                 const currentUser = document.createElement('div')
                 const removeUser = document.createElement('buttton')
-                if (group.adminName === username) {
+                if (admin === username && user.name !==admin) {
 
                     removeUser.className = 'detail-button remove'
                     removeUser.textContent = 'Remove'
@@ -236,7 +236,11 @@ function renderGroups(groups) {
 
 
                 currentUser.innerHTML = user.name
-                currentUser.className = 'participant';
+                if (user.name === admin)
+                    currentUser.className = 'participant admin'
+
+                else
+                    currentUser.className = 'participant';
 
                 thisUserDiv.appendChild(currentUser)
                 if (group.adminName === username)
