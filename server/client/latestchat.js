@@ -15,7 +15,7 @@ toggleButton.addEventListener('click', () => {
 });
 
 // let url = "http://localhost:3000"
-let url = "http://54.242.179.63:3000"
+let url = "http://54.242.179.63"
 let username
 let groupId
 let groupName
