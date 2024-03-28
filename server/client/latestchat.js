@@ -324,36 +324,73 @@ function addParticipants() {
     document.getElementById('done').style.display = 'block';
     document.getElementById('display-users').style.display = 'block';
 
+    // document.getElementById('searchUser').addEventListener('input', async (event) => {
+    //     const searchValue = event.target.value.trim();
+    //     console.log(searchValue)
+    //     try {
+    //         const response = await axios.get(`${url}/user/findUser`, {
+    //             params: { searchQuery: searchValue }
+    //         });
+
+
+    //         const users = response.data;
+    //         // Handle the response and display matching users
+    //         console.log(users);
+    //         const userDiv = document.createElement('div')
+    //         userDiv.id=users.id
+    //         userDiv.innerHTML = `
+    //         <span >${users.name}</span>
+    //         <button class="add-button" onclick="addUserToGroup(${users.id})">Add</button>
+    //         `;
+
+    //         displayUsersDiv.appendChild(userDiv)
+    //         document.getElementById('searchUser').value = ''
+
+
+    //         // document.getElementById('searchUser').style.display = 'none';
+    //         // Do something with the matching users
+    //     } catch (error) {
+    //         console.error('User does not exist:', error);
+    //         // Handle error
+    //     }
+    // })
+
+    let timeoutId;
+
     document.getElementById('searchUser').addEventListener('input', async (event) => {
         const searchValue = event.target.value.trim();
-        console.log(searchValue)
-        try {
-            const response = await axios.get(`${url}/user/findUser`, {
-                params: { searchQuery: searchValue }
-            });
+        console.log(searchValue);
 
+        // Clear any existing timeout
+        clearTimeout(timeoutId);
 
-            const users = response.data;
-            // Handle the response and display matching users
-            console.log(users);
-            const userDiv = document.createElement('div')
-            userDiv.id=users.id
-            userDiv.innerHTML = `
-            <span >${users.name}</span>
-            <button class="add-button" onclick="addUserToGroup(${users.id})">Add</button>
+        // Set a new timeout to delay the execution of the search request
+        timeoutId = setTimeout(async () => {
+            try {
+                const response = await axios.get(`${url}/user/findUser`, {
+                    params: { searchQuery: searchValue }
+                });
+
+                const users = response.data;
+                // Handle the response and display matching users
+                console.log(users);
+                const userDiv = document.createElement('div')
+                userDiv.id = users.id
+                userDiv.innerHTML = `
+                <span >${users.name}</span>
+                <button class="add-button" onclick="addUserToGroup(${users.id})">Add</button>
             `;
 
-            displayUsersDiv.appendChild(userDiv)
-            document.getElementById('searchUser').value = ''
+                displayUsersDiv.appendChild(userDiv);
+                document.getElementById('searchUser').value = '';
 
-
-            // document.getElementById('searchUser').style.display = 'none';
-            // Do something with the matching users
-        } catch (error) {
-            console.error('User does not exist:', error);
-            // Handle error
-        }
-    })
+                // Do something with the matching users
+            } catch (error) {
+                console.error('User does not exist:', error);
+                // Handle error
+            }
+        }, 500); // Adjust the delay as needed (e.g., 500 milliseconds)
+    });
 }
 
 async function addUserToGroup(userId) {
