@@ -9,7 +9,7 @@ function logout() {
         console.log(res)
         localStorage.clear()
         alert(res.data)
-        window.location.href = 'login.html'
+        window.location.href = 'login'
     }).catch(err => console.log(err))
 }
 

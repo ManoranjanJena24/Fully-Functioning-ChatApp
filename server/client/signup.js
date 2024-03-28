@@ -81,7 +81,7 @@ function postSignUpData(data) {
     axios.post(`${url}/user/signup`, data).then((res) => {
         console.log(res)
         alert(res.data.message)
-        window.location.href = 'login.html';
+        window.location.href = 'login';
     }).catch((err) => {
         console.log(err)
         const errormsg = document.getElementById('errormsg')

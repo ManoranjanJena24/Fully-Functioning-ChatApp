@@ -81,7 +81,7 @@ function userLogin(data) {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('isPremium', res.data.isPremium)
         // window.location.href = 'chat.html';
-        window.location.href = 'latestchat.html';
+        window.location.href = 'latestchat';
 
     }).catch((error) => {
         console.log(error.response.data.message)

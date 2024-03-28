@@ -30,28 +30,31 @@ app.use(morgan('combined', { stream: accessLogStream }))
 const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message')
 const groupRoutes = require('./routes/group')
+const mainPageRouter = require('./routes/mainpage')
 // const passwordRoutes = require('./routes/password')
 // const salaryRoutes = require('./routes/salary')
 
 app.use(bodyParser.json({ extended: false }));
 app.use(cors())
+app.use(express.static('client'))
+app.use(express.static('views'))
 
-app.set('view engine', 'ejs'); // Set EJS as the view engine
-app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs'); // Set EJS as the view engine
+// app.set('views', path.join(__dirname, 'views'));
 
 
-
+app.use(mainPageRouter)
 app.use('/user', userRoutes);
 app.use('/message', messageRoutes)
 app.use('/group', groupRoutes)
 // app.use('/password', passwordRoutes)
 // app.use('/salary', salaryRoutes)
 
-app.use((req, res, next) => {
-    console.log('url>>>>>>>', req.url)
-    res.sendFile(path.join(__dirname, `client/${req.url}`))
+// app.use((req, res, next) => {
+//     console.log('url>>>>>>>', req.url)
+//     res.sendFile(path.join(__dirname, `client/${req.url}`))
 
-})
+// })
 
 
 
