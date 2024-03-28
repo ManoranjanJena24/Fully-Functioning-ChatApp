@@ -322,6 +322,7 @@ function addParticipants() {
     const displayUsersDiv = document.getElementById('display-users')
     displayUsersDiv.innerHTML = ''
     document.getElementById('done').style.display = 'block';
+    document.getElementById('display-users').style.display = 'block';
 
     document.getElementById('searchUser').addEventListener('input', async (event) => {
         const searchValue = event.target.value.trim();
