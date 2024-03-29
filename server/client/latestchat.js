@@ -59,6 +59,56 @@ function sendMessage(data) {
     })
 }
 
+const addMediaButton = document.getElementById('add-media');
+const addMediaInput = document.getElementById('add-media-input');
+const fileDialog = document.getElementById('file-dialog');
+const fileDialogClose = document.getElementById('file-dialog-close');
+const fileDialogSelect = document.getElementById('file-dialog-select');
+
+// Function to check and handle file size limit
+function handleFileSize(file) {
+    const fileSize = file.size / 1024 / 1024; // Convert to MB
+    if (fileSize > 20) {
+        alert('File size exceeds limit (20MB max). Please choose a smaller file.');
+        return false; // Prevent upload if file is too large
+    }
+    return true; // Allow upload
+}
+
+addMediaButton.addEventListener('click', () => {
+    console.log('add clicked')
+    fileDialog.style.display = 'block'; // Show the dialog box
+});
+
+fileDialogClose.addEventListener('click', () => {
+    fileDialog.style.display = 'none'; // Hide the dialog box
+});
+
+fileDialogSelect.addEventListener('click', () => {
+    addMediaInput.click(); // Trigger the hidden file input click
+    const files = addMediaInput.files;
+    for (const file of files) {
+        if (!handleFileSize(file)) {
+            // File size exceeded limit, handle accordingly (e.g., remove from selection)
+            return;
+        }
+    }
+    // Handle the selected files (e.g., upload logic)
+    fileDialog.style.display = 'none'; // Hide the dialog box after selection
+});
+
+// Add event listener to handle file selection (optional)
+addMediaInput.addEventListener('change', (event) => {
+    const files = event.target.files;
+    for (const file of files) {
+        if (!handleFileSize(file)) {
+            // File size exceeded limit, handle accordingly (e.g., remove from selection)
+            return;
+        }
+        // Handle the selected file (e.g., upload logic)
+    }
+});
+
 
 let lastMessageId = localStorage.getItem('lastMessageId') || -1;
 const MAX_MESSAGES = 1000;
@@ -467,4 +517,5 @@ window.addEventListener('DOMContentLoaded', () => {
     getGroups();
     document.getElementById('searchUser').style.display = 'none';
     document.getElementById('done').style.display = 'none';
+    document.getElementById('file-dialog').style.display = 'none';
 });

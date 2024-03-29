@@ -86,6 +86,13 @@
         </div>
       </div>
 
+      <div id="file-dialog">
+        <h2>Select Files</h2>
+        <p>Choose files from your device or drag and drop here (20MB max each).</p>
+        <button id="file-dialog-close">Close</button>
+        <button id="file-dialog-select">Select Files</button>
+      </div>
+
       <div class="chat-area">
         <div class="chat-area-header">
           <div class="chat-area-title" id="currentGroupName"></div>
@@ -222,11 +229,18 @@
             <circle cx="8.5" cy="8.5" r="1.5" />
             <path d="M21 15l-5-5L5 21" />
           </svg>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 8v8M8 12h8" />
+          </svg> -->
+          <svg id="add-media" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 
+                      8v8M8 12h8" />
           </svg>
+          <input type="file" id="add-media-input" hidden accept="*" multiple>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip">
             <path
