@@ -861,7 +861,7 @@ button[disabled] {
   /* Adjust the animation duration as needed */
 }
 
-#file-dialog {
+.file-dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -875,22 +875,22 @@ button[disabled] {
   /* Initially hidden */
 }
 
-#file-dialog h2 {
+.file-dialog h2 {
   margin-bottom: 10px;
 }
 
-#file-dialog p {
+.file-dialog p {
   margin-bottom: 20px;
 }
 
-#file-dialog button {
+.file-dialog button {
   padding: 10px 20px;
   border: none;
   border-radius: 3px;
   cursor: pointer;
 }
 
-#file-dialog button:hover {
+.file-dialog button:hover {
   background-color: #eee;
 }
 

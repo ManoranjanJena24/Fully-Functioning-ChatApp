@@ -202,14 +202,9 @@ function toggleCreateGroupForm() {
     createGroupFormContainer.classList.toggle('hidden');
 }
 
-// document.getElementById('createGroupForm').addEventListener('submit', function (event) {
-//     event.preventDefault();
-//     console.log('button')
-//     const groupName = document.getElementById('groupNameInput').value;
-//     createGroup(groupName);
-// });
 const createGroupForm = document.getElementById("createGroupForm");
 const overlay = document.getElementById("overlay");
+const overlayClose = document.getElementById('form-dialog-close')
 const createGroupButton = document.getElementById("createGroupButton");
 
 createGroupForm.addEventListener("click", function () {
@@ -217,11 +212,16 @@ createGroupForm.addEventListener("click", function () {
     overlay.style.display = "block";
 });
 
+overlayClose.addEventListener('click', () => {
+    overlay.style.display = 'none'; // Hide the dialog box
+});
+
 createGroupButton.addEventListener("click", function () {
     console.log('Group created');
     const groupName = document.getElementById('groupName').value;
-    createGroup(groupName)
     overlay.style.display = "none";
+    createGroup(groupName)
+    
 });
 
 function createGroup(groupName) {
@@ -230,11 +230,12 @@ function createGroup(groupName) {
         .then((res) => {
             console.log(res.data);
             // Refresh group list
+            document.getElementById('groupName').value = '';
             getGroups();
             // Hide the form
-            toggleCreateGroupForm();
+            // toggleCreateGroupForm();
             // Clear input field
-            document.getElementById('groupName').value = '';
+          
         })
         .catch((err) => console.error(err));
 }

@@ -78,15 +78,15 @@
         <button class="add" id="createGroupForm"></button>
       </div>
 
-      <div class="overlay" id="overlay">
-        <div class="overlay-content">
+      <div class="file-dialog" id="overlay" >
           <h2>Create Group</h2>
           <input type="text" id="groupName" placeholder="Enter group name">
+          <button id="form-dialog-close" >Close</button>
           <button id="createGroupButton">Create Group</button>
         </div>
-      </div>
+     
 
-      <div id="file-dialog">
+      <div id="file-dialog" class="file-dialog">
         <h2>Select Files</h2>
         <p>Choose files from your device or drag and drop here (20MB max each).</p>
         <button id="file-dialog-close">Close</button>
