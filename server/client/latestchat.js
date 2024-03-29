@@ -58,12 +58,18 @@ function sendMessage(data) {
         console.log(err)
     })
 }
-
+const selectedFiles = [];
 const addMediaButton = document.getElementById('add-media');
 const addMediaInput = document.getElementById('add-media-input');
 const fileDialog = document.getElementById('file-dialog');
 const fileDialogClose = document.getElementById('file-dialog-close');
 const fileDialogSelect = document.getElementById('file-dialog-select');
+const fileList = document.getElementById('file-list');
+const doneBtn = document.getElementById('file-dialog-send')
+
+if (selectedFiles.length === 0) {
+    doneBtn.disabled = true;
+}
 
 // Function to check and handle file size limit
 function handleFileSize(file) {
@@ -82,6 +88,7 @@ addMediaButton.addEventListener('click', () => {
 
 fileDialogClose.addEventListener('click', () => {
     fileDialog.style.display = 'none'; // Hide the dialog box
+    fileList.innerHTML = ''
 });
 
 fileDialogSelect.addEventListener('click', () => {
@@ -90,12 +97,39 @@ fileDialogSelect.addEventListener('click', () => {
     for (const file of files) {
         if (!handleFileSize(file)) {
             // File size exceeded limit, handle accordingly (e.g., remove from selection)
-            return;
+            continue;
+
         }
     }
     // Handle the selected files (e.g., upload logic)
-    fileDialog.style.display = 'none'; // Hide the dialog box after selection
+    // fileDialog.style.display = 'none'; // Hide the dialog box after selection
 });
+
+function renderFile(file) {
+   
+    doneBtn.disabled = false;
+
+    const fileDiv = document.createElement('div');
+    fileDiv.classList.add('file-item'); // Apply a class for styling
+
+    fileDiv.textContent = file.name;
+
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '×'; // Cross button content
+    removeButton.addEventListener('click', () => {
+        // Remove the file from the selectedFiles array
+        const index = selectedFiles.indexOf(file);
+        selectedFiles.splice(index, 1);
+
+        // Remove the file's div element from the dialog
+        fileDiv.remove();
+    });
+
+    fileDiv.appendChild(removeButton);
+
+    // const fileList = document.getElementById('file-list'); // Assuming a container for files
+    fileList.appendChild(fileDiv);
+}
 
 // Add event listener to handle file selection (optional)
 addMediaInput.addEventListener('change', (event) => {
@@ -106,8 +140,23 @@ addMediaInput.addEventListener('change', (event) => {
             return;
         }
         // Handle the selected file (e.g., upload logic)
+        selectedFiles.push(file);
+        console.log(selectedFiles)
+        renderFile(file)
+        
     }
 });
+
+doneBtn.addEventListener('click', () => {
+    console.log('files to be added', selectedFiles)
+    console.log('group id', groupId)
+    fileList.innerHTML = ''
+    fileDialog.style.display = 'none';
+    //todo- send these files to backend along with the group id and send token as authorization headers so backend can get the userid as well
+    //    - call getMessages function
+    //    - render it 
+
+})
 
 
 let lastMessageId = localStorage.getItem('lastMessageId') || -1;
@@ -221,7 +270,7 @@ createGroupButton.addEventListener("click", function () {
     const groupName = document.getElementById('groupName').value;
     overlay.style.display = "none";
     createGroup(groupName)
-    
+
 });
 
 function createGroup(groupName) {
@@ -235,7 +284,7 @@ function createGroup(groupName) {
             // Hide the form
             // toggleCreateGroupForm();
             // Clear input field
-          
+
         })
         .catch((err) => console.error(err));
 }
@@ -271,11 +320,11 @@ function renderGroups(groups) {
                 console.log(user.id)
                 const thisUserDiv = document.createElement('div')
                 thisUserDiv.className = 'user-container';
-                thisUserDiv.id=user.id
+                thisUserDiv.id = user.id
 
                 const currentUser = document.createElement('div')
                 const removeUser = document.createElement('buttton')
-                if (admin === username && user.name !==admin) {
+                if (admin === username && user.name !== admin) {
 
                     removeUser.className = 'detail-button remove'
                     removeUser.textContent = 'Remove'
@@ -300,7 +349,7 @@ function renderGroups(groups) {
 
                 allMembers.appendChild(thisUserDiv)
             })
-            
+
 
             if (admin === username) {
                 console.log('This user is admin')
@@ -447,7 +496,7 @@ function addParticipants() {
 async function addUserToGroup(userId) {
     console.log(userId, 'user id')
     console.log(groupId, 'gorup id')
-    
+
     try {
         const response = await axios.post(`group/addUser`, {
             groupId: groupId,

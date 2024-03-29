@@ -894,6 +894,27 @@ button[disabled] {
   background-color: #eee;
 }
 
+#file-list {
+  /* Style the container for selected files */
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
+.file-item {
+  /* Style each selected file representation */
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.file-item button {
+  /* Style the remove button for each file */
+  border: none;
+  background-color: transparent;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
 @keyframes shakeAnimation {
   from {
     transform: translateX(-1px);

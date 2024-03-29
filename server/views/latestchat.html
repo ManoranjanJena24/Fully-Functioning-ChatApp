@@ -78,20 +78,25 @@
         <button class="add" id="createGroupForm"></button>
       </div>
 
-      <div class="file-dialog" id="overlay" >
-          <h2>Create Group</h2>
-          <input type="text" id="groupName" placeholder="Enter group name">
-          <button id="form-dialog-close" >Close</button>
-          <button id="createGroupButton">Create Group</button>
-        </div>
-     
+      <div class="file-dialog" id="overlay">
+        <h2>Create Group</h2>
+        <input type="text" id="groupName" placeholder="Enter group name">
+        <button id="form-dialog-close">Close</button>
+        <button id="createGroupButton">Create Group</button>
+      </div>
+
 
       <div id="file-dialog" class="file-dialog">
         <h2>Select Files</h2>
         <p>Choose files from your device or drag and drop here (20MB max each).</p>
         <button id="file-dialog-close">Close</button>
         <button id="file-dialog-select">Select Files</button>
+        <div id="file-list"></div>
+        <button id="file-dialog-send">Done</button>
       </div>
+
+      <input type="file" id="add-media-input" style="display: none;" multiple />
+
 
       <div class="chat-area">
         <div class="chat-area-header">
@@ -367,11 +372,11 @@
           </div>
           <div class="view-more">View More</div>
         </div> -->
-        
+
         <div id="all-members" class="detail-photos">
           <div class="detail-photo-title">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
               <path
                 d="M12 2a5 5 0 0 1 5 5v2a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5zM12 14c-3.5 0-10 1.5-10 4v2h20v-2c0-2.5-6.5-4-10-4z" />
             </svg>
@@ -396,7 +401,7 @@
               src="https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2249&q=80" />
             <img
               src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2309&q=80" />
-        
+
             <img
               src="https://images.unsplash.com/photo-1473170611423-22489201d919?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2251&q=80" />
             <img
