@@ -73,7 +73,7 @@ document.getElementById('signInForm').addEventListener('submit', function (event
 
 function userLogin(data) {
     console.log(url)
-    axios.post(`${url}/user/login`, data).then((res) => {
+    axios.post(`user/login`, data).then((res) => {
         alert("User Loggedin succesfully")
         localStorage.setItem("user", res.data.name)
         console.log(res.data.token)

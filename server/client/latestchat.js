@@ -25,7 +25,7 @@ let createdAt
 let token;
 function logout() {
     console.log(token)
-    axios.get(`${url}/user/logout`, { headers: { "Authorization": token } }).then((res) => {
+    axios.get(`user/logout`, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
         localStorage.clear()
         alert(res.data)
@@ -34,7 +34,7 @@ function logout() {
 }
 
 function getLoggedInUsers() {
-    axios.get(`${url}/user/online`).then((res) => {
+    axios.get(`user/online`).then((res) => {
         console.log(res.data.users)
     })
 }
@@ -51,7 +51,7 @@ document.getElementById('send-btn').addEventListener('click', function (event) {
 });
 
 function sendMessage(data) {
-    axios.post(`${url}/message/add-message?groupId=${groupId}`, data, { headers: { "Authorization": token } }).then((res) => {
+    axios.post(`message/add-message?groupId=${groupId}`, data, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
         getMessages()
     }).catch((err) => {
@@ -65,7 +65,7 @@ const MAX_MESSAGES = 1000;
 
 function getMessages() {
     console.log('get msgs called')
-    axios.get(`${url}/message/get-messages?lastmsgId=${lastMessageId}`).then((res) => {
+    axios.get(`message/get-messages?lastmsgId=${lastMessageId}`).then((res) => {
         const messages = res.data;
         if (messages.length > 0) {
 
@@ -176,7 +176,7 @@ createGroupButton.addEventListener("click", function () {
 
 function createGroup(groupName) {
     console.log('Inside create group')
-    axios.post(`${url}/group/create`, { groupName }, { headers: { "Authorization": token } })
+    axios.post(`group/create`, { groupName }, { headers: { "Authorization": token } })
         .then((res) => {
             console.log(res.data);
             // Refresh group list
@@ -190,7 +190,7 @@ function createGroup(groupName) {
 }
 
 function getGroups() {
-    axios.get(`${url}/group/get-groups`, { headers: { "Authorization": token } })
+    axios.get(`group/get-groups`, { headers: { "Authorization": token } })
         .then((res) => {
             const groups = res.data;
             renderGroups(groups);
@@ -367,7 +367,7 @@ function addParticipants() {
         // Set a new timeout to delay the execution of the search request
         timeoutId = setTimeout(async () => {
             try {
-                const response = await axios.get(`${url}/user/findUser`, {
+                const response = await axios.get(`user/findUser`, {
                     params: { searchQuery: searchValue }
                 });
 
@@ -398,7 +398,7 @@ async function addUserToGroup(userId) {
     console.log(groupId, 'gorup id')
     
     try {
-        const response = await axios.post(`${url}/group/addUser`, {
+        const response = await axios.post(`group/addUser`, {
             groupId: groupId,
             userId: userId
         });
@@ -435,7 +435,7 @@ async function removeUserFromGroup(id) {
 
     try {
         // Send a DELETE request to your backend API endpoint
-        const response = await axios.delete(`${url}/group/removeUser`, {
+        const response = await axios.delete(`group/removeUser`, {
             data: { groupId, id }, // Pass the group ID and user ID in the request body
             headers: { "Authorization": token } // Add authorization headers if required
         });

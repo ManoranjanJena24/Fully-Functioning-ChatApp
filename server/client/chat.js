@@ -5,7 +5,7 @@ let username
 let token;
 function logout() {
     console.log(token)
-    axios.get(`${url}/user/logout`, { headers: { "Authorization": token } }).then((res) => {
+    axios.get(`user/logout`, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
         localStorage.clear()
         alert(res.data)
@@ -14,7 +14,7 @@ function logout() {
 }
 
 function getLoggedInUsers() {
-    axios.get(`${url}/user/online`).then((res) => {
+    axios.get(`user/online`).then((res) => {
         console.log(res.data.users)
     })
 }
@@ -31,7 +31,7 @@ document.getElementById('messageForm').addEventListener('submit', function (even
 });
 
 function sendMessage(data) {
-    axios.post(`${url}/message/add-message`, data, { headers: { "Authorization": token } }).then((res) => {
+    axios.post(`message/add-message`, data, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
         getMessages()
     }).catch((err) => {
@@ -44,7 +44,7 @@ let lastMessageId = localStorage.getItem('lastMessageId') || -1;
 const MAX_MESSAGES = 1000;
 
 function getMessages() {
-    axios.get(`${url}/message/get-messages?lastmsgId=${lastMessageId}`).then((res) => {
+    axios.get(`message/get-messages?lastmsgId=${lastMessageId}`).then((res) => {
         const messages = res.data;
         if (messages.length > 0) {
 
@@ -106,7 +106,7 @@ document.getElementById('createGroupForm').addEventListener('submit', function (
 });
 
 function createGroup(groupName) {
-    axios.post(`${url}/group/create`, { groupName }, { headers: { "Authorization": token } })
+    axios.post(`group/create`, { groupName }, { headers: { "Authorization": token } })
         .then((res) => {
             console.log(res.data);
             // Refresh group list
@@ -120,7 +120,7 @@ function createGroup(groupName) {
 }
 
 function getGroups() {
-    axios.get(`${url}/group/get-groups`, { headers: { "Authorization": token } })
+    axios.get(`group/get-groups`, { headers: { "Authorization": token } })
         .then((res) => {
             const groups = res.data;
             renderGroups(groups);
