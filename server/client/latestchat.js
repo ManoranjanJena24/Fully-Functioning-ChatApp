@@ -58,7 +58,12 @@ function sendMessage(data) {
         console.log(err)
     })
 }
-const selectedFiles = [];
+
+let selectedFiles = [];
+
+
+
+
 const addMediaButton = document.getElementById('add-media');
 const addMediaInput = document.getElementById('add-media-input');
 const fileDialog = document.getElementById('file-dialog');
@@ -66,10 +71,8 @@ const fileDialogClose = document.getElementById('file-dialog-close');
 const fileDialogSelect = document.getElementById('file-dialog-select');
 const fileList = document.getElementById('file-list');
 const doneBtn = document.getElementById('file-dialog-send')
-
-if (selectedFiles.length === 0) {
-    doneBtn.disabled = true;
-}
+if (selectedFiles.length === 0)
+    doneBtn.disabled = true
 
 // Function to check and handle file size limit
 function handleFileSize(file) {
@@ -91,24 +94,33 @@ fileDialogClose.addEventListener('click', () => {
     fileList.innerHTML = ''
 });
 
+//chaanges
+function isImageFile(file) {
+    return file.type.startsWith('image/');
+}
+//changes
+
 fileDialogSelect.addEventListener('click', () => {
-    addMediaInput.click(); // Trigger the hidden file input click
+    addMediaInput.click();
     const files = addMediaInput.files;
+
     for (const file of files) {
         if (!handleFileSize(file)) {
-            // File size exceeded limit, handle accordingly (e.g., remove from selection)
-            continue;
 
+            continue;
         }
-    }
-    // Handle the selected files (e.g., upload logic)
-    // fileDialog.style.display = 'none'; // Hide the dialog box after selection
+        //changes
+        if (isImageFile(file)) { // Check if the file is an image
+            // selectedFiles.push(file);
+            // renderFile(file);
+        }
+    } //changes
+
+
 });
 
 function renderFile(file) {
-   
-    doneBtn.disabled = false;
-
+    doneBtn.disabled = false
     const fileDiv = document.createElement('div');
     fileDiv.classList.add('file-item'); // Apply a class for styling
 
@@ -131,6 +143,7 @@ function renderFile(file) {
     fileList.appendChild(fileDiv);
 }
 
+
 // Add event listener to handle file selection (optional)
 addMediaInput.addEventListener('change', (event) => {
     const files = event.target.files;
@@ -139,11 +152,14 @@ addMediaInput.addEventListener('change', (event) => {
             // File size exceeded limit, handle accordingly (e.g., remove from selection)
             return;
         }
-        // Handle the selected file (e.g., upload logic)
-        selectedFiles.push(file);
+        if (isImageFile(file)) { // Check if the file is an image
+            selectedFiles.push(file);
+            renderFile(file);
+        } else {
+            alert('Please select only image files.');
+        }
         console.log(selectedFiles)
-        renderFile(file)
-        
+
     }
 });
 
@@ -152,11 +168,32 @@ doneBtn.addEventListener('click', () => {
     console.log('group id', groupId)
     fileList.innerHTML = ''
     fileDialog.style.display = 'none';
+
+
+    selectedFiles.forEach((file) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        axios.post(`message/add-media?groupId=${groupId}`, formData, { headers: { "Authorization": token, "Content-Type": "multipart/form-data" } }).then((res) => {
+            console.log(res)
+            selectedFiles.splice(0)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    });
+
+
+
+
     //todo- send these files to backend along with the group id and send token as authorization headers so backend can get the userid as well
     //    - call getMessages function
     //    - render it 
 
 })
+
+//todo- send these files to backend along with the group id and send token as authorization headers so backend can get the userid as well
+//    - call getMessages function
+//    - render it 
 
 
 let lastMessageId = localStorage.getItem('lastMessageId') || -1;

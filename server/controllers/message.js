@@ -3,20 +3,6 @@ const sequelize = require('../utils/database')
 const Message = require('../models/message')
 const { Op } = require('sequelize');
 
-// exports.postAddMessage = (req, res, next) => {
-//     const userId = req.user.id
-//     const message = req.body.message
-//     Message.create({
-//         message: message,
-//         userId: userId
-//     }).then(() => {
-//         res.send("Message sent succesfully")
-
-//     }).catch((err) => {
-//         res.send(err)
-//     })
-
-// };
 
 exports.postAddMessage = (req, res, next) => {
     const groupId = req.query.groupId
@@ -25,7 +11,8 @@ exports.postAddMessage = (req, res, next) => {
     Message.create({
         message: message,
         userId: userId,
-        groupId: groupId
+        groupId: groupId,
+        isText:true
     }).then(() => {
         res.send("Message sent succesfully")
 
@@ -60,6 +47,27 @@ exports.getMessages = async (req, res, next) => {
         console.error('Error fetching messages:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+};
+
+
+exports.postAddImage = (req, res, next) => {
+    console.log(req.file, 'this is the files')
+    const groupId = req.query.groupId
+    const userId = req.user.id
+    res.send('image recieved')
+    // const message = req.body.message
+    // Message.create({
+    //     message: message,
+    //     userId: userId,
+    //     groupId: groupId,
+    //     isText:true //change
+    // }).then(() => {
+    //     res.send("Message sent succesfully")
+
+    // }).catch((err) => {
+    //     res.send(err)
+    // })
+
 };
 
 

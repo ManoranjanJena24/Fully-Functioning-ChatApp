@@ -72,7 +72,7 @@ Group.hasMany(Message)
 // User.hasMany(Salary)
 
 sequelize.sync({
-    // force: true  //these should not be done in production becoz we donot want to overwrite the table everytime we run
+    force: true  //these should not be done in production becoz we donot want to overwrite the table everytime we run
     // alter:true
 })
 app.listen(3000)

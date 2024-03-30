@@ -11,6 +11,9 @@ const Message = sequelize.define('messages', {
         type: Sequelize.STRING,
         allowNull: false,
     },
+    isText: {
+        type: Sequelize.STRING,
+    }
 })
 
 
