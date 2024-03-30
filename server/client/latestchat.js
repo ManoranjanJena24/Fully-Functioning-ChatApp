@@ -224,6 +224,63 @@ function getMessages() {
 }
 
 
+// function renderMessages(data) {
+//     const chatArea = document.getElementById('chat-area-main');
+//     chatArea.innerHTML = ''; // Clear previous messages
+//     let initial = '';
+//     let lastChatMsg = null;
+//     let lastUserChatDiv = null; // Track the last chat user div
+
+//     data.forEach((message, index) => {
+//         if (message.groupId === groupId) {
+//             const chatUser = document.createElement('div');
+//             const chatContext = document.createElement('div');
+//             const chatText = document.createElement('div');
+
+//             if (message.name !== initial) {
+//                 if (message.name === username) {
+//                     chatUser.className = 'chat-msg owner';
+//                 } else {
+//                     chatUser.className = 'chat-msg';
+//                 }
+
+//                 chatContext.className = 'chat-msg-content';
+//                 chatText.className = 'chat-msg-text';
+//                 chatText.innerHTML = message.message;
+
+//                 chatContext.appendChild(chatText);
+//                 chatUser.appendChild(chatContext);
+//                 chatArea.appendChild(chatUser);
+
+//                 lastChatMsg = chatContext; // Set the last chat context for the user
+//                 lastUserChatDiv = chatUser; // Set the last chat user div
+//             } else {
+//                 const newChatText = document.createElement('div');
+//                 newChatText.className = 'chat-msg-text';
+//                 newChatText.innerHTML = message.message;
+//                 lastChatMsg.appendChild(newChatText);
+//             }
+
+//             // If the current message is the last message or the next message belongs to a different user
+//             if (index === data.length - 1 || data[index + 1].name !== message.name) {
+//                 // Append a new div to chatUser
+//                 const newChatDiv = document.createElement('div');
+//                 newChatDiv.className = 'chat-msg-profile';
+//                 // Adjust class name as needed
+//                 const lastUserName = document.createElement('div')
+//                 lastUserName.className = 'chat-msg-date'
+//                 console.log(message.name)
+//                 lastUserName.innerHTML = message.name
+
+//                 newChatDiv.appendChild(lastUserName)
+//                 lastUserChatDiv.appendChild(newChatDiv);
+//             }
+
+//             initial = message.name; // Update the initial name for comparison
+//         }
+//     });
+// }
+
 function renderMessages(data) {
     const chatArea = document.getElementById('chat-area-main');
     chatArea.innerHTML = ''; // Clear previous messages
@@ -235,7 +292,6 @@ function renderMessages(data) {
         if (message.groupId === groupId) {
             const chatUser = document.createElement('div');
             const chatContext = document.createElement('div');
-            const chatText = document.createElement('div');
 
             if (message.name !== initial) {
                 if (message.name === username) {
@@ -245,20 +301,36 @@ function renderMessages(data) {
                 }
 
                 chatContext.className = 'chat-msg-content';
-                chatText.className = 'chat-msg-text';
-                chatText.innerHTML = message.message;
 
-                chatContext.appendChild(chatText);
+                if (message.isText === '1') {
+                    const chatText = document.createElement('div');
+                    chatText.className = 'chat-msg-text';
+                    chatText.innerHTML = message.message;
+                    chatContext.appendChild(chatText);
+                } else if (message.isText === '0') {
+                    const chatImg = document.createElement('img');
+                    chatImg.className = 'chat-msg-image';
+                    chatImg.src = message.message;
+                    chatContext.appendChild(chatImg);
+                }
+
                 chatUser.appendChild(chatContext);
                 chatArea.appendChild(chatUser);
 
                 lastChatMsg = chatContext; // Set the last chat context for the user
                 lastUserChatDiv = chatUser; // Set the last chat user div
             } else {
-                const newChatText = document.createElement('div');
-                newChatText.className = 'chat-msg-text';
-                newChatText.innerHTML = message.message;
-                lastChatMsg.appendChild(newChatText);
+                if (message.isText === '1') {
+                    const newChatText = document.createElement('div');
+                    newChatText.className = 'chat-msg-text';
+                    newChatText.innerHTML = message.message;
+                    lastChatMsg.appendChild(newChatText);
+                } else if (message.isText === '0') {
+                    const newChatImg = document.createElement('img');
+                    newChatImg.className = 'chat-msg-image';
+                    newChatImg.src = message.message;
+                    lastChatMsg.appendChild(newChatImg);
+                }
             }
 
             // If the current message is the last message or the next message belongs to a different user
@@ -267,12 +339,11 @@ function renderMessages(data) {
                 const newChatDiv = document.createElement('div');
                 newChatDiv.className = 'chat-msg-profile';
                 // Adjust class name as needed
-                const lastUserName = document.createElement('div')
-                lastUserName.className = 'chat-msg-date'
-                console.log(message.name)
-                lastUserName.innerHTML = message.name
+                const lastUserName = document.createElement('div');
+                lastUserName.className = 'chat-msg-date';
+                lastUserName.innerHTML = message.name;
 
-                newChatDiv.appendChild(lastUserName)
+                newChatDiv.appendChild(lastUserName);
                 lastUserChatDiv.appendChild(newChatDiv);
             }
 
@@ -280,8 +351,6 @@ function renderMessages(data) {
         }
     });
 }
-
-
 
 function toggleCreateGroupForm() {
     const createGroupFormContainer = document.getElementById('createGroupFormContainer');

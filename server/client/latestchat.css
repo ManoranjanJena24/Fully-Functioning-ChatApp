@@ -484,6 +484,14 @@ button[disabled] {
   width: 100%;
 }
 
+.chat-msg-image {
+  max-width: 300px;
+  width: 100%;
+  border-radius: 20px 20px 20px 0;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
 .chat-area-footer {
   display: flex;
   border-top: 1px solid var(--border-color);
@@ -697,6 +705,7 @@ button[disabled] {
 
 
 }
+
 .admin {
   border: 1px solid var(--theme-color);
 }

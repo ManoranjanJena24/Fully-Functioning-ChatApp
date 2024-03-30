@@ -105,6 +105,7 @@ exports.getMessages = async (req, res, next) => {
                 'message',
                 'groupId',
                 'createdAt',
+                'isText',
                 [sequelize.col('user.name'), 'name'], // Include user.name as 'name'
             ],
             include: [{
