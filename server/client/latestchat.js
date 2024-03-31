@@ -23,6 +23,10 @@ let admin
 let createdAt
 
 let token;
+
+const logoutButton = document.getElementById("logoutBtn");
+logoutButton.addEventListener("click", logout);
+
 function logout() {
     console.log(token)
     axios.get(`user/logout`, { headers: { "Authorization": token } }).then((res) => {
@@ -39,7 +43,10 @@ function getLoggedInUsers() {
     })
 }
 
-
+const socket = io(window.location.origin);
+socket.on('connect', () => {
+    console.log(`You connected with id: ${socket.id}`)
+})
 
 document.getElementById('send-btn').addEventListener('click', function (event) {
     // event.preventDefault();
@@ -53,11 +60,20 @@ document.getElementById('send-btn').addEventListener('click', function (event) {
 function sendMessage(data) {
     axios.post(`message/add-message?groupId=${groupId}`, data, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
+        socket.emit('send-message', { data, groupId });
         getMessages()
     }).catch((err) => {
         console.log(err)
     })
 }
+
+socket.on('new-message', () => {
+    getMessages();
+});
+
+socket.on('media-added', () => {
+    getMessages();
+});
 
 let selectedFiles = [];
 
@@ -175,7 +191,9 @@ doneBtn.addEventListener('click', () => {
         formData.append('image', file);
         axios.post(`message/add-media?groupId=${groupId}`, formData, { headers: { "Authorization": token, "Content-Type": "multipart/form-data" } }).then((res) => {
             console.log(res)
+            socket.emit('add-media', { selectedFiles, groupId });
             selectedFiles.splice(0)
+            getMessages();
         }).catch((err) => {
             console.log(err)
         })
@@ -224,62 +242,7 @@ function getMessages() {
 }
 
 
-// function renderMessages(data) {
-//     const chatArea = document.getElementById('chat-area-main');
-//     chatArea.innerHTML = ''; // Clear previous messages
-//     let initial = '';
-//     let lastChatMsg = null;
-//     let lastUserChatDiv = null; // Track the last chat user div
 
-//     data.forEach((message, index) => {
-//         if (message.groupId === groupId) {
-//             const chatUser = document.createElement('div');
-//             const chatContext = document.createElement('div');
-//             const chatText = document.createElement('div');
-
-//             if (message.name !== initial) {
-//                 if (message.name === username) {
-//                     chatUser.className = 'chat-msg owner';
-//                 } else {
-//                     chatUser.className = 'chat-msg';
-//                 }
-
-//                 chatContext.className = 'chat-msg-content';
-//                 chatText.className = 'chat-msg-text';
-//                 chatText.innerHTML = message.message;
-
-//                 chatContext.appendChild(chatText);
-//                 chatUser.appendChild(chatContext);
-//                 chatArea.appendChild(chatUser);
-
-//                 lastChatMsg = chatContext; // Set the last chat context for the user
-//                 lastUserChatDiv = chatUser; // Set the last chat user div
-//             } else {
-//                 const newChatText = document.createElement('div');
-//                 newChatText.className = 'chat-msg-text';
-//                 newChatText.innerHTML = message.message;
-//                 lastChatMsg.appendChild(newChatText);
-//             }
-
-//             // If the current message is the last message or the next message belongs to a different user
-//             if (index === data.length - 1 || data[index + 1].name !== message.name) {
-//                 // Append a new div to chatUser
-//                 const newChatDiv = document.createElement('div');
-//                 newChatDiv.className = 'chat-msg-profile';
-//                 // Adjust class name as needed
-//                 const lastUserName = document.createElement('div')
-//                 lastUserName.className = 'chat-msg-date'
-//                 console.log(message.name)
-//                 lastUserName.innerHTML = message.name
-
-//                 newChatDiv.appendChild(lastUserName)
-//                 lastUserChatDiv.appendChild(newChatDiv);
-//             }
-
-//             initial = message.name; // Update the initial name for comparison
-//         }
-//     });
-// }
 
 function renderMessages(data) {
     const chatArea = document.getElementById('chat-area-main');
@@ -416,7 +379,7 @@ function renderGroups(groups) {
             const allMembers = document.getElementById('detail-all-members')
             allMembers.innerHTML = ''
 
-            allUsers = group.userName
+            let allUsers = group.userName
             groupId = group.id
             groupName = group.groupName
             admin = group.adminName
@@ -517,6 +480,9 @@ function renderGroups(groups) {
 
 }
 
+const addButton = document.getElementById("add-participants-btn");
+addButton.addEventListener("click", addParticipants);
+
 function addParticipants() {
     console.log(groupId, 'this is the selected groupid')
     console.log('Add participants')
@@ -584,8 +550,13 @@ function addParticipants() {
                 userDiv.id = users.id
                 userDiv.innerHTML = `
                 <span >${users.name}</span>
-                <button class="add-button" onclick="addUserToGroup(${users.id})">Add</button>
-            `;
+                <button class="add-button" >Add</button>
+                `;
+
+                const addButton = userDiv.querySelector('.add-button');
+                addButton.addEventListener('click', () => {
+                    addUserToGroup(users.id);
+                });
 
                 displayUsersDiv.appendChild(userDiv);
                 document.getElementById('searchUser').value = '';
@@ -626,6 +597,9 @@ async function addUserToGroup(userId) {
     }
 
 }
+
+const adduserButton = document.getElementById("add-users");
+adduserButton.addEventListener("click", AddUsers);
 function AddUsers() {
     document.getElementById('searchUser').style.display = 'none';
     document.getElementById('done').style.display = 'none';
@@ -658,7 +632,7 @@ async function removeUserFromGroup(id) {
 }
 
 
-setInterval(getMessages, 5000);
+
 window.addEventListener('DOMContentLoaded', () => {
 
     token = localStorage.getItem('token')

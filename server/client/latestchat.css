@@ -488,8 +488,31 @@ button[disabled] {
   max-width: 300px;
   width: 100%;
   border-radius: 20px 20px 20px 0;
-  margin-top: 10px;
+}
+
+.chat-msg-image {
+  background-color: var(--chat-text-bg);
+  padding: 15px;
+  border-radius: 20px 20px 20px 0;
+  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chat-msg-image+.chat-msg-image {
+  margin-top: 5px;
+}
+
+.chat-msg-image {
+  color: var(--chat-text-color);
+  margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.owner .chat-msg-image {
+  background-color: var(--theme-color);
+  color: #fff;
+  border-radius: 20px 20px 0 20px;
 }
 
 .chat-area-footer {
@@ -956,4 +979,3 @@ button[disabled] {
   }
 }
 
-/*# sourceMappingURL=test2.css.map */

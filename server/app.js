@@ -8,6 +8,10 @@ var Sib = require('sib-api-v3-sdk');
 // const sib = new Sib()
 const fs = require('fs')
 const path = require('path');
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const { instrument } = require('@socket.io/admin-ui');
+const websocketService = require('./services/websocket');
 
 
 const User = require('./models/user')
@@ -15,9 +19,6 @@ const User = require('./models/user')
 const Message = require('./models/message')
 
 const Group = require('./models/group')
-// const Order = require('./models/order')
-// const ForgotPassword = require('./models/forgotPassword')
-// const Salary = require('./models/salary')
 
 
 const app = express();
@@ -27,34 +28,42 @@ const cors = require('cors')
 
 app.use(morgan('combined', { stream: accessLogStream }))
 
+app.use(cors(
+    {
+        origin: '*',
+        methods: ['GET', 'POST'],
+
+    }
+))
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors: {
+        origin: '*',
+        credentials: true
+    }
+});
+console.log('connected')
+io.on('connection', websocketService)
+
+instrument(io, { auth: false })
+
 const userRoutes = require('./routes/user')
 const messageRoutes = require('./routes/message')
 const groupRoutes = require('./routes/group')
 const mainPageRouter = require('./routes/mainpage')
-// const passwordRoutes = require('./routes/password')
-// const salaryRoutes = require('./routes/salary')
 
 app.use(bodyParser.json({ extended: false }));
-app.use(cors())
+
 app.use(express.static('client'))
 app.use(express.static('views'))
-
-// app.set('view engine', 'ejs'); // Set EJS as the view engine
-// app.set('views', path.join(__dirname, 'views'));
 
 
 app.use(mainPageRouter)
 app.use('/user', userRoutes);
 app.use('/message', messageRoutes)
 app.use('/group', groupRoutes)
-// app.use('/password', passwordRoutes)
-// app.use('/salary', salaryRoutes)
 
-// app.use((req, res, next) => {
-//     console.log('url>>>>>>>', req.url)
-//     res.sendFile(path.join(__dirname, `client/${req.url}`))
-
-// })
 
 
 
@@ -75,4 +84,4 @@ sequelize.sync({
     // force: true  //these should not be done in production becoz we donot want to overwrite the table everytime we run
     // alter:true
 })
-app.listen(3000)
+httpServer.listen(3000)
