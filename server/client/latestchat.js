@@ -57,6 +57,19 @@ document.getElementById('send-btn').addEventListener('click', function (event) {
     sendMessage(messageData);
 });
 
+document.getElementById('messageInput').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        console.log('this is caled')
+        event.preventDefault(); // Prevent default form submission
+
+        const messageData = {
+            message: document.getElementById('messageInput').value,
+        };
+        document.getElementById('messageInput').value = '';
+        sendMessage(messageData);
+    }
+});
+
 function sendMessage(data) {
     axios.post(`message/add-message?groupId=${groupId}`, data, { headers: { "Authorization": token } }).then((res) => {
         console.log(res)
