@@ -638,7 +638,7 @@ window.addEventListener('DOMContentLoaded', () => {
     token = localStorage.getItem('token')
     username = localStorage.getItem('user')
     const welcome = document.getElementById('welcome')
-    welcome.innerHTML = `Start Messaging, ${username}`
+    welcome.innerHTML = `Start Messaging,  <span class="username">${username}!</span>`
     document.getElementById("overlay").style.display = 'none';
     // checkPremium(localStorage.getItem('isPremium') === 'true')
     groupId = -1

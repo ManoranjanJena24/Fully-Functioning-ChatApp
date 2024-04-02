@@ -198,10 +198,24 @@ button[disabled] {
   color: var(--input-chat-color);
 }
 
+#welcome {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: auto;
+  margin-top: 2rem;
+
+}
+
 .logo {
   color: var(--theme-color);
-  width: 38px;
+  /* width: 38px; */
   flex-shrink: 0;
+}
+
+.username {
+  color: var(--theme-color);
+  font-weight: bold;
 }
 
 .logo svg {
