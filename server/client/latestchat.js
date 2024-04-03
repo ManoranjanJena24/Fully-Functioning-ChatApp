@@ -441,6 +441,9 @@ function renderGroups(groups) {
                     currentUser.className = 'participant';
 
                 thisUserDiv.appendChild(currentUser)
+                if (user.name === username && user.name !== admin) {
+                    thisUserDiv.appendChild(removeUser)
+                }
                 if (group.adminName === username || group.allAdmins.includes(username)) {
                   
                     if(user.name!==admin)
