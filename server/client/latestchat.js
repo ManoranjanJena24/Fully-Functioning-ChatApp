@@ -20,6 +20,7 @@ let username
 let groupId
 let groupName
 let admin
+let allAdmins =[] //changes
 let createdAt
 
 let token;
@@ -396,6 +397,7 @@ function renderGroups(groups) {
             groupId = group.id
             groupName = group.groupName
             admin = group.adminName
+            allAdmins=group.allAdmins //changes
             createdAt = (group.createdAt)
 
             allUsers.forEach((user) => {
@@ -407,22 +409,28 @@ function renderGroups(groups) {
                 const currentUser = document.createElement('div')
                 const removeUser = document.createElement('buttton')
                 const makeAdmin = document.createElement('buttton')
-                if (admin === username && user.name !== admin) {
+                // if ((admin === username && user.name !== admin)||(allAdmins.includes(username) && !allAdmins.includes(user.name))) {
 
+                    console.log('added remove')
                     removeUser.className = 'detail-button remove'
-                    removeUser.textContent = 'Remove'
-                    makeAdmin.className = 'detail-button remove'
-                    makeAdmin.textContent = 'Make Admin'
+                    if(user.name===username) 
+                    removeUser.textContent = 'Leave'
+                    else{
+                    removeUser.textContent = 'Remove'}
                     removeUser.addEventListener('click', () => {
                         // Handle remove user functionality
                         removeUserFromGroup(user.id); // Pass the user ID
+                        
                     });
+                    makeAdmin.className = 'detail-button remove'
+                    makeAdmin.textContent = 'Make Admin'
                     makeAdmin.addEventListener('click', () => {
                         makeUserAdmin(user.id)
+                        
                     })
 
 
-                }
+                // }
 
 
                 currentUser.innerHTML = user.name
@@ -433,16 +441,24 @@ function renderGroups(groups) {
                     currentUser.className = 'participant';
 
                 thisUserDiv.appendChild(currentUser)
-                if (group.adminName === username) {
+                if (group.adminName === username || group.allAdmins.includes(username)) {
+                  
+                    if(user.name!==admin)
                     thisUserDiv.appendChild(removeUser)
-                    thisUserDiv.appendChild(makeAdmin)
+                    // console.log(allAdmins.includes(user.name))
+                    // console.log(user.name===admin)
+                    if(!allAdmins.includes(user.name)&&user.name!==admin){
+                        console.log('we dont need to add makeadmin btn')
+                        thisUserDiv.appendChild(makeAdmin)
+                    }
+                   
                 }
 
                 allMembers.appendChild(thisUserDiv)
             })
 
 
-            if (admin === username) {
+            if (admin === username || allAdmins.includes(username)) {
                 console.log('This user is admin')
                 document.getElementById('add-participants-btn').disabled = false
             }
@@ -646,7 +662,7 @@ async function removeUserFromGroup(id) {
         document.getElementById(id).remove()
         // Handle the response
         console.log(response.data); // Log success message or handle as needed
-
+        //here we can make a getGroups call again
     } catch (error) {
         console.error('Error removing user from group:', error);
         // Handle error
@@ -661,7 +677,7 @@ async function makeUserAdmin(id) {
             data: { groupId, id }
         });
         console.log(response)
-
+        //here we can make a getGroups call again
     } catch (error) {
         console.error('Error removing user from group:', error);
         // Handle error

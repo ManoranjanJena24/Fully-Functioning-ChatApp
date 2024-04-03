@@ -177,7 +177,11 @@ exports.removeUserFromGroup = async (req, res) => {
 
         // Remove the user from the group using the association method
         await group.removeUser(userId);
-
+        const entry = await Admins.findOne({ where: { groupId, userId } });
+        if (entry) {
+            // Delete the row from Admins if it exists
+            await entry.destroy();
+        }
         // Success message
         return res.status(200).json({ message: `User with ID ${userId} removed from group with ID ${groupId}` });
     } catch (error) {
