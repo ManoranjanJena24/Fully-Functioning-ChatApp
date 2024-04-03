@@ -16,5 +16,6 @@ router.delete('/removeUser', groupController.removeUserFromGroup);
 router.get('/get-groups', userAuthentication.authenticate, groupController.getGroups);
 // router.post('/addUser', userAuthentication.authenticate, groupController.postAddUserToGroup); // todo-in frotnend..pass token in headers
 router.post('/addUser', groupController.postAddUserToGroup);
+router.post('/addAdmin', groupController.addAdmin);
 
 module.exports = router;

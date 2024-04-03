@@ -406,14 +406,21 @@ function renderGroups(groups) {
 
                 const currentUser = document.createElement('div')
                 const removeUser = document.createElement('buttton')
+                const makeAdmin = document.createElement('buttton')
                 if (admin === username && user.name !== admin) {
 
                     removeUser.className = 'detail-button remove'
                     removeUser.textContent = 'Remove'
+                    makeAdmin.className = 'detail-button remove'
+                    makeAdmin.textContent = 'Make Admin'
                     removeUser.addEventListener('click', () => {
                         // Handle remove user functionality
                         removeUserFromGroup(user.id); // Pass the user ID
                     });
+                    makeAdmin.addEventListener('click', () => {
+                        makeUserAdmin(user.id)
+                    })
+
 
                 }
 
@@ -426,8 +433,10 @@ function renderGroups(groups) {
                     currentUser.className = 'participant';
 
                 thisUserDiv.appendChild(currentUser)
-                if (group.adminName === username)
+                if (group.adminName === username) {
                     thisUserDiv.appendChild(removeUser)
+                    thisUserDiv.appendChild(makeAdmin)
+                }
 
                 allMembers.appendChild(thisUserDiv)
             })
@@ -644,6 +653,20 @@ async function removeUserFromGroup(id) {
     }
 }
 
+async function makeUserAdmin(id) {
+    try {
+        console.log('User with id ', id, ' has to be made admin of the groupip ', groupId)
+
+        const response = await axios.post('group/addAdmin', {
+            data: { groupId, id }
+        });
+        console.log(response)
+
+    } catch (error) {
+        console.error('Error removing user from group:', error);
+        // Handle error
+    }
+}
 
 
 window.addEventListener('DOMContentLoaded', () => {
