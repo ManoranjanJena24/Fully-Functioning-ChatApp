@@ -19,70 +19,13 @@ exports.createGroup = async (req, res, next) => {
 };
 
 
-
-// exports.getGroups = async (req, res, next) => {
-//     const userId = req.user.id;
-
-//     try {
-//         // Retrieve groups the user belongs to using eager loading
-//         const groups = await Group.findAll({
-//             attributes: ['id', 'groupName', 'createdAt', 'adminId'],
-//             include: {
-//                 model: User,
-//                 attributes: ['name'],
-//                 as: 'users',
-//                 where: { id: userId }, // Filter users to match the requesting user
-//             },
-//             // Include GroupUser to efficiently associate groups with users
-//             through: {
-//                 model: 'GroupUser', // Use the inferred name for the intermediate table
-//             },
-//         });
-
-//         // If no groups found (user is not a member of any)
-//         if (!groups || groups.length === 0) {
-//             return res.status(404).json({ error: 'No groups found' });
-//         }
-
-//         // Separate loop for fetching admin names asynchronously (efficient)
-//         const adminNames = await Promise.all(groups.map(group => getAdminName(group.adminId)));
-
-//         // Combine formatted groups with admin names
-//         const finalGroups = await Promise.all(groups.map(async (group, index) => {
-//             // Fetch names of all users in the group
-//             const groupUserNames = await getUserNamesByGroupId(group.id);
-
-//             return {
-//                 id: group.id,
-//                 groupName: group.groupName,
-//                 adminId: group.adminId,
-//                 userName: groupUserNames,
-//                 adminName: adminNames[index],
-//                 createdAt: group.createdAt,
-//             };
-//         }));
-
-//         // Send the formatted response
-//         res.json(finalGroups);
-//     } catch (error) {
-//         console.error('Error fetching groups:', error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// };
-
-
-// Helper function to fetch names of all users in a group
-
 exports.getGroups = async (req, res, next) => {
     const userId = req.user.id;
 
     try {
         // Retrieve groups the user belongs to using eager loading
 
-        const adminRecords = await Admins.findAll({ where: { groupId: userId } });
 
-        const userIds = adminRecords.map(admin => admin.userId);
-        const allAdminNames = await Promise.all(userIds.map(userId => getUserName(userId)));
         // console.log(allAdminNames)
 
         const groups = await Group.findAll({
@@ -92,6 +35,7 @@ exports.getGroups = async (req, res, next) => {
                 attributes: ['name'],
                 as: 'users',
                 where: { id: userId }, // Filter users to match the requesting user
+
             },
             // Include GroupUser to efficiently associate groups with users
             through: {
@@ -107,10 +51,13 @@ exports.getGroups = async (req, res, next) => {
         // Separate loop for fetching admin names asynchronously (efficient)
         const adminNames = await Promise.all(groups.map(group => getAdminName(group.adminId)));
 
-        // const allAdmins=
-        // Combine formatted groups with admin names
+
+
+
         const finalGroups = await Promise.all(groups.map(async (group, index) => {
             // Fetch names of all users in the group
+            const allAdminNames = await getAllAdminNames(group.id);
+            console.log(allAdminNames)
             const groupUserNames = await getUserNamesByGroupId(group.id);
 
             return {
@@ -119,6 +66,7 @@ exports.getGroups = async (req, res, next) => {
                 adminId: group.adminId,
                 userName: groupUserNames,
                 adminName: adminNames[index],
+
                 allAdmins: allAdminNames,
                 createdAt: group.createdAt,
             };
@@ -132,6 +80,33 @@ exports.getGroups = async (req, res, next) => {
     }
 };
 
+async function getAllAdminNames(groupId) {
+    try {
+        // Find all admins for the group
+        const admins = await Admins.findAll({
+            where: {
+                groupId: groupId,
+            },
+            attributes: ['userId'],
+        });
+
+        if (!admins || admins.length === 0) {
+            return []; // Return empty array if no admins found
+        }
+
+        const userIds = admins.map(admin => admin.userId);
+        const users = await User.findAll({
+            where: { id: userIds },
+            attributes: ['name'],
+        });
+
+        return users.map(user => user.name);
+
+    } catch (error) {
+        console.error('Error fetching admin names:', error);
+        return ['Unknown']; // Set a default value for error handling
+    }
+}
 
 const getUserName = async (userId) => {
     try {

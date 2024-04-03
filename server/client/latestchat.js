@@ -426,7 +426,7 @@ function renderGroups(groups) {
 
 
                 currentUser.innerHTML = user.name
-                if (user.name === admin)
+                if (user.name === admin || group.allAdmins.includes(user.name))
                     currentUser.className = 'participant admin'
 
                 else
