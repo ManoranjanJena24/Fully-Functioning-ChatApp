@@ -24,6 +24,8 @@ const Group = require('./models/group')
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
 const cors = require('cors')
+const cronService = require('./services/cron');
+cronService.job.start();
 
 
 app.use(morgan('combined', { stream: accessLogStream }))
@@ -81,7 +83,7 @@ Group.hasMany(Message)
 // User.hasMany(Salary)
 
 sequelize.sync({
-    // force: true  //these should not be done in production becoz we donot want to overwrite the table everytime we run
+    force: true  //these should not be done in production becoz we donot want to overwrite the table everytime we run
     // alter:true
 })
 httpServer.listen(3000)
