@@ -666,6 +666,7 @@ async function removeUserFromGroup(id) {
         // Handle the response
         console.log(response.data); // Log success message or handle as needed
         //here we can make a getGroups call again
+        getGroups();
     } catch (error) {
         console.error('Error removing user from group:', error);
         // Handle error
@@ -681,6 +682,7 @@ async function makeUserAdmin(id) {
         });
         console.log(response)
         //here we can make a getGroups call again
+        getGroups();
     } catch (error) {
         console.error('Error removing user from group:', error);
         // Handle error
